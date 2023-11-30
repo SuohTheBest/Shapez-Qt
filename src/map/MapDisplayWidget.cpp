@@ -82,8 +82,6 @@ void MapDisplayWidget::handleSelectionChange() {
     if(construction_button->machine_id!=-1)
     {
         MachineBase* new_machine=MachineBase::to_base[construction_button->machine_id](scene,pos);
-        new_machine->setFlag(new_machine->ItemIsSelectable, true);
-        new_machine->setZValue(1);
         //不合法的操作
         if(item->zValue()>0||construction_button->is_overlap(map_item_placed,new_machine))
         {

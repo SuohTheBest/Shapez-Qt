@@ -14,7 +14,7 @@ MachineDriller::MachineDriller(QGraphicsScene *scene,QPointF &pos): MachineBase(
     }
     timer=new QTimer(this);
     sender=new ItemSender(this->pos().x(),this->pos().y(),scene,DRILLER_TIME);
-    connect(this, SIGNAL(item_drilled(BasicItems *)),sender, SLOT(get_item(BasicItems *)));
+    connect(this, SIGNAL(item_drilled(BasicItems*)),sender, SLOT(get_item(BasicItems*)));
     connect(timer, SIGNAL(timeout()), this, SLOT(drill()));
     timer->start(DRILLER_TIME);
 }
@@ -24,9 +24,9 @@ MachineBase* MachineDriller::to_base(QGraphicsScene *scene,QPointF &pos) {
 }
 
 void MachineDriller::drill() {
-    //if(sender->is_full)return;
+    if(sender->is_full)return;
     BasicItems* new_item=new BasicItems(item_id);
-    new_item->setPos(this->pos());
+    new_item->setPos(this->pos().x()+25,this->pos().y()+13);
     qDebug()<<new_item->pos()<<item_id;
     scene->addItem(new_item);
     emit item_drilled(new_item);

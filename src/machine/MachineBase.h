@@ -21,6 +21,8 @@ public:
     static MachineBase* (*to_base[TYPES_OF_MACHINES])(QGraphicsScene *scene,QPointF &pos);
     MachineBase(int machine_id, const QPixmap &pixmap,QGraphicsScene *scene,QPointF &pos):QGraphicsPixmapItem(pixmap,nullptr),machine_id(machine_id),scene(scene),towards(0){
         this->setPos(pos);
+        this->setFlag(this->ItemIsSelectable,true);
+        this->setZValue(1);
     };
     int size_x();
     int size_y();

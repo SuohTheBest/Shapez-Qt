@@ -29,7 +29,6 @@ protected:
     void handleSelectionChange();
 
 private:
-    bool isMousePressed;
     int layer;
     short map_item_placed[64][64];
     QList<MachineBase*> machine_placed;

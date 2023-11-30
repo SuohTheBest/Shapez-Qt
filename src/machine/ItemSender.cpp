@@ -16,12 +16,11 @@ ItemSender::ItemSender(int posx, int posy, QGraphicsScene* scene,int msec) : QGr
 };
 
 void ItemSender::connect_with_getter() {
-    QGraphicsItem* graphicsItem=scene->itemAt(this->pos(),QTransform());
-    qDebug()<<this->pos();
+    QGraphicsItem* graphicsItem=scene->itemAt(this->pos().x()+1,this->pos().y()+1,QTransform());
     if(graphicsItem->zValue()==3)
     {
-        this->getter=static_cast<ItemGetter*>(graphicsItem);//6d138b0 36ed2e0 6c713d0
-        qDebug()<<"Connected!";
+        this->getter=dynamic_cast<ItemGetter*>(graphicsItem);
+        qDebug()<<this->pos()<<"Connected!"<<getter->pos();
         timer->stop();
         connect(this, SIGNAL(item_get(BasicItems*)),getter,SLOT(get_item(BasicItems*)));
         if(is_full&&!getter->is_full)

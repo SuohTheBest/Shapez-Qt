@@ -13,7 +13,7 @@ add_executable(projDrill
         src/map/MapDisplayWidget.h
         main.cpp
         projdrill.cpp
-        projdrill.h src/action/ConstructionButton.cpp src/machine/MachineBase.cpp src/machine/MachineCenter.h src/machine/MachineCenter.cpp src/machine/MachineCutter.cpp src/machine/MachineRubbishBin.cpp src/map/MapBlockItem.cpp src/machine/MachineConveyor.cpp src/machine/ItemGetter.h src/machine/ItemSender.h src/machine/ItemSender.cpp src/machine/ItemGetter.cpp src/machine/MachineDriller.cpp)
+        projdrill.h src/action/ConstructionButton.cpp src/machine/MachineBase.cpp src/machine/MachineCenter.h src/machine/MachineCenter.cpp src/machine/MachineCutter.cpp src/machine/MachineRubbishBin.cpp src/map/MapBlockItem.cpp src/machine/MachineConveyor.cpp src/machine/ItemGetter.h src/machine/ItemSender.h src/machine/ItemSender.cpp src/machine/ItemGetter.cpp src/machine/MachineDriller.cpp src/item/MachineShade.h src/item/MachineShade.cpp)
 
 find_package(Qt5 COMPONENTS
         Core
