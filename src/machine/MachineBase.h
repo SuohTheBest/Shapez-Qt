@@ -9,6 +9,7 @@
 #include "../item/ItemsBase.h"
 #include "ItemSender.h"
 #include "ItemGetter.h"
+#include "QDebug"
 
 using namespace std;
 

@@ -5,6 +5,10 @@
 #include "QTimer"
 #include "ItemGetter.h"
 #include "../item/ItemsBase.h"
+/**
+ *  @brief 一个不可见的QGraphicsRectItem对象，用于机器产生物品
+ *  @brief 机器类需要connect到get_item()槽函数
+ * */
 class ItemSender:public QObject,public QGraphicsRectItem
 {
     Q_OBJECT

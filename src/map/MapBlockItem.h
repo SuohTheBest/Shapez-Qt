@@ -10,8 +10,9 @@ public:
     // 默认为0
     void set_type(int type);
     string detail_info();
-private:
     int type=0;
+
+private:
     static string info[TYPE_OF_BLOCKS];
 };
 
