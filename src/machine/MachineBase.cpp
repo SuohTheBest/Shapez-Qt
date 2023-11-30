@@ -6,7 +6,7 @@
 
 const int MachineBase::machine_size[TYPES_OF_MACHINES][2]={{4,4},{2,1},{1,1},{1,1},{1,1}};
 const string MachineBase::machine_info[TYPES_OF_MACHINES]={"交付中心","切割机","垃圾桶","矿井挖掘","传送带"};
-MachineBase* (*MachineBase::to_base[TYPES_OF_MACHINES])(QGraphicsScene *parent) ={MachineCenter::to_base,MachineCutter::to_base,MachineRubbishBin::to_base,MachineDriller::to_base,MachineConveyor::to_base};
+MachineBase* (*MachineBase::to_base[TYPES_OF_MACHINES])(QGraphicsScene *scene,QPointF &pos) ={MachineCenter::to_base,MachineCutter::to_base,MachineRubbishBin::to_base,MachineDriller::to_base,MachineConveyor::to_base};
 
 string MachineBase::img_path()
 {

@@ -18,8 +18,10 @@ public:
     int machine_id;
     const static int machine_size[TYPES_OF_MACHINES][2];
     const static string machine_info[TYPES_OF_MACHINES];
-    static MachineBase* (*to_base[TYPES_OF_MACHINES])(QGraphicsScene *scene);
-    MachineBase(int machine_id, const QPixmap &pixmap,QGraphicsScene *scene):QGraphicsPixmapItem(pixmap,nullptr),machine_id(machine_id),scene(scene),towards(0){};
+    static MachineBase* (*to_base[TYPES_OF_MACHINES])(QGraphicsScene *scene,QPointF &pos);
+    MachineBase(int machine_id, const QPixmap &pixmap,QGraphicsScene *scene,QPointF &pos):QGraphicsPixmapItem(pixmap,nullptr),machine_id(machine_id),scene(scene),towards(0){
+        this->setPos(pos);
+    };
     int size_x();
     int size_y();
     string detail_info();

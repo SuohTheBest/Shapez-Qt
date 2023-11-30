@@ -3,6 +3,7 @@
 #include "QGraphicsRectItem"
 #include "QGraphicsScene"
 #include "QTimer"
+#include "QDebug"
 #include "ItemGetter.h"
 #include "../item/ItemsBase.h"
 /**
@@ -13,16 +14,7 @@ class ItemSender:public QObject,public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    ItemSender(int posx, int posy, QGraphicsScene* scene,int msec) : QGraphicsRectItem(posx, posy, 44, 44), scene(scene),msec(msec) {
-        this->setZValue(2);//getter在sender上方
-        scene->addItem(this);
-        timer=new QTimer(this);
-        timer->start(msec);
-        getter= nullptr;
-        item_stored= nullptr;
-        is_full=false;
-        connect(timer, SIGNAL(timeout()), this, SLOT(move_item()));
-    };
+    ItemSender(int posx, int posy, QGraphicsScene* scene,int msec);
     void reconnect();
     bool is_full;
 public slots:

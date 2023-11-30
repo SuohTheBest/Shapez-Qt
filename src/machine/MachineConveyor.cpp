@@ -1,18 +1,19 @@
 #include "MachineConveyor.h"
 ::int8_t MachineConveyor::position_array[4][2] = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
 
-MachineConveyor::MachineConveyor(QGraphicsScene *scene) : MachineBase(4, QPixmap(QString::fromStdString(img_path(4))), scene) {
+MachineConveyor::MachineConveyor(QGraphicsScene *scene,QPointF &pos) : MachineBase(4, QPixmap(QString::fromStdString(img_path(4))), scene,pos) {
     timer_running = false;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(move_item()));
     speed = 5;
-    getter = new ItemGetter(this->pos().x() - position_array[towards][0], this->pos().y() - position_array[towards][1], scene);
+    qDebug()<<this->pos().x()<<" "<<this->pos().y();
+    getter = new ItemGetter(this->pos().x() - position_array[towards][0]*44, this->pos().y() - position_array[towards][1]*44, scene);
     sender = new ItemSender(this->pos().x(), this->pos().y(), scene, CONVEYOR_TIMER_MSEC);
     connect(getter, SIGNAL(item_get(BasicItems *)), this, SLOT(add_item(BasicItems *)));
 }
 
-MachineBase *MachineConveyor::to_base(QGraphicsScene *scene) {
-    return new MachineConveyor(scene);
+MachineBase *MachineConveyor::to_base(QGraphicsScene *scene,QPointF &pos) {
+    return new MachineConveyor(scene,pos);
 }
 
 void MachineConveyor::move_item() {
@@ -45,8 +46,4 @@ void MachineConveyor::add_item(BasicItems *new_item) {
     }
     items.append(new_item);
     new_item->pixels_moved = 0;
-}
-
-void MachineConveyor::remove_item(BasicItems *remove_item) {
-    items.removeOne(remove_item);
 }

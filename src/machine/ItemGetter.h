@@ -3,11 +3,16 @@
 #include "QGraphicsItem"
 #include "../item/ItemsBase.h"
 #include <QGraphicsScene>
+#include "QDebug"
 class ItemGetter : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-    ItemGetter(int posx, int posy, QGraphicsScene* scene) : QGraphicsRectItem(posx, posy, 44, 44), scene(scene) {
+    ItemGetter(int posx, int posy, QGraphicsScene* scene) : QGraphicsRectItem(0, 0, 44, 44), scene(scene) {
         this->setZValue(3);//getter在sender上方
+        this->setBrush(Qt::blue);
+        this->setOpacity(0.3);
+        this->setPos(posx,posy);
+        qDebug()<<"Getter_pos:"<<this->pos();
         scene->addItem(this);
         is_full=false;
     };

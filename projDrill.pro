@@ -22,6 +22,8 @@ SOURCES += \
     projdrill.cpp \
     src/action/ConstructionButton.cpp \
     src/action/SaveHelper.cpp \
+    src/machine/ItemGetter.cpp \
+    src/machine/ItemSender.cpp \
     src/machine/MachineBase.cpp \
     src/machine/MachineCenter.cpp \
     src/machine/MachineConveyor.cpp \
@@ -38,6 +40,8 @@ HEADERS += \
     src/action/ConstructionButton.h \
     src/action/SaveHelper.h \
     src/item/ItemsBase.h \
+    src/machine/ItemGetter.h \
+    src/machine/ItemSender.h \
     src/machine/MachineBase.h \
     src/machine/MachineCenter.h \
     src/machine/MachineConveyor.h \

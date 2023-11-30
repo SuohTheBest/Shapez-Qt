@@ -5,8 +5,8 @@
 class MachineCenter:public MachineBase
 {
 public:
-    MachineCenter(QGraphicsScene *scene);
-    static MachineBase *to_base(QGraphicsScene *scene);
+    MachineCenter(QGraphicsScene *scene,QPointF &pos);
+    static MachineBase *to_base(QGraphicsScene *scene,QPointF &pos);
 private:
     int *storage;
 
