@@ -6,8 +6,8 @@
 class MachineDriller : public QObject, public MachineBase {
     Q_OBJECT
 public:
-    MachineDriller(QGraphicsScene *scene,QPointF &pos);
-    static MachineBase *to_base(QGraphicsScene *scene,QPointF &pos);
+    MachineDriller(QGraphicsScene *scene,QPointF &pos,short towards);
+    static MachineBase *to_base(QGraphicsScene *scene,QPointF &pos,short towards);
 public slots:
     void drill();
 signals:

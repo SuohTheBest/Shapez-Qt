@@ -9,7 +9,6 @@ ConstructionButton::ConstructionButton(QGraphicsScene *scene,QWidget* parent):QT
     this->setIcon(QIcon("./img/button/construction.jpg"));
     this->setPopupMode(QToolButton::InstantPopup);
     menu=new QMenu();
-
     signalMapper = new QSignalMapper();
     QAction *actions[TYPES_OF_MACHINES];
     for (int i=0;i<TYPES_OF_MACHINES;i++) {

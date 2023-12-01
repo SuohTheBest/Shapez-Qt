@@ -8,8 +8,8 @@ class MachineConveyor:public QObject, public MachineBase
 {
     Q_OBJECT
 public:
-    MachineConveyor(QGraphicsScene *scene,QPointF &pos);
-    static MachineBase *to_base(QGraphicsScene *scene,QPointF &pos);
+    MachineConveyor(QGraphicsScene *scene,QPointF &pos,short towards);
+    static MachineBase *to_base(QGraphicsScene *scene,QPointF &pos,short towards);
     QTimer *timer;
 public slots:
     void move_item();

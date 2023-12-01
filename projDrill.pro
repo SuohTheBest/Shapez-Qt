@@ -21,7 +21,9 @@ SOURCES += \
     main.cpp \
     projdrill.cpp \
     src/action/ConstructionButton.cpp \
+    src/action/RotateButton.cpp \
     src/action/SaveHelper.cpp \
+    src/item/MachineShadow.cpp \
     src/machine/ItemGetter.cpp \
     src/machine/ItemSender.cpp \
     src/machine/MachineBase.cpp \
@@ -38,8 +40,10 @@ HEADERS += \
     projdrill.h \
     src/BaseDefinitions.h \
     src/action/ConstructionButton.h \
+    src/action/RotateButton.h \
     src/action/SaveHelper.h \
     src/item/ItemsBase.h \
+    src/item/MachineShadow.h \
     src/machine/ItemGetter.h \
     src/machine/ItemSender.h \
     src/machine/MachineBase.h \

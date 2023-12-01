@@ -4,8 +4,8 @@
 class MachineCutter:public MachineBase
 {
 public:
-    MachineCutter(QGraphicsScene *scene,QPointF &pos);
-    static MachineBase* to_base(QGraphicsScene *scene,QPointF &pos);
+    MachineCutter(QGraphicsScene *scene,QPointF &pos,short towards);
+    static MachineBase* to_base(QGraphicsScene *scene,QPointF &pos,short towards);
 private:
     int *storage;
 

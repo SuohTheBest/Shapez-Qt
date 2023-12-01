@@ -4,8 +4,8 @@
 class MachineRubbishBin:public MachineBase
 {
 public:
-    MachineRubbishBin(QGraphicsScene *scene,QPointF &pos);
-    static MachineBase* to_base(QGraphicsScene *scene,QPointF &pos);
+    MachineRubbishBin(QGraphicsScene *scene,QPointF &pos,short towards);
+    static MachineBase* to_base(QGraphicsScene *scene,QPointF &pos,short towards);
 private:
 };
 #endif//PROJDRILL_MACHINERUBBISHBIN_H
