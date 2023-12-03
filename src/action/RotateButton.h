@@ -10,7 +10,7 @@ public:
 
 	void set_shadow(MachineShadow *shadow);
 
-	void set_enable(MachineShadow *shadow);
+	void set_enable(QPointF pos, int machine_id);
 
 	void set_disable();
 

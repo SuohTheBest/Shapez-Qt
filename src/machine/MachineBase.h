@@ -22,6 +22,7 @@ public:
     static MachineBase* (*to_base[TYPES_OF_MACHINES])(QGraphicsScene *scene,QPointF &pos,short towards);
     MachineBase(int machine_id, const QPixmap &pixmap,QGraphicsScene *scene,QPointF &pos,short towards):QGraphicsPixmapItem(pixmap,nullptr),machine_id(machine_id), towards(
 			towards), scene(scene){
+        this->setTransformOriginPoint(22*machine_size[machine_id][0],22*machine_size[machine_id][0]);
         this->setPos(pos);
         this->setFlag(this->ItemIsSelectable,true);
         this->setZValue(1);

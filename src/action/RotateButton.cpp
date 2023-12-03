@@ -1,8 +1,9 @@
 #include "RotateButton.h"
 
 RotateButton::RotateButton(MachineShadow *shadow) :
-		shadow(shadow), QPushButton() {
+         QPushButton(),shadow(shadow) {
 	this->setIcon(QIcon("./img/button/rotate.png"));
+    this->setIconSize(QSize(64,64));
 	this->setEnabled(false);
     connect(this, &RotateButton::clicked, this, &RotateButton::on_clicked);
 }
@@ -15,12 +16,12 @@ void RotateButton::set_shadow(MachineShadow *shadow) {
 	this->shadow = shadow;
 }
 
-void RotateButton::set_enable(MachineShadow *shadow) {
-	this->shadow = shadow;
+void RotateButton::set_enable(QPointF pos, int machine_id) {
+	shadow->setup(pos,machine_id);
 	this->setEnabled(true);
 }
 
 void RotateButton::set_disable() {
-	delete this->shadow;
-	this->shadow = nullptr;
+    this->setEnabled(false);
+    shadow->destory();
 }
