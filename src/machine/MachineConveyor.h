@@ -4,6 +4,7 @@
 #define CONVEYOR_TIMER_MSEC 80
 #include "MachineBase.h"
 #include "QTimer"
+#include "QQueue"
 class MachineConveyor:public QObject, public MachineBase
 {
     Q_OBJECT
@@ -17,7 +18,7 @@ public slots:
 signals:
     void remove_item(BasicItems *remove_item);
 private:
-    QList<BasicItems *> items;
+    QQueue<BasicItems *> items;
     static ::int8_t position_array[4][2];
     bool timer_running;
     short speed;

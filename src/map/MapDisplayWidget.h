@@ -26,10 +26,6 @@ public:
 	MapDisplayWidget(int layer, QWidget *parent);
 
 protected:
-	void keyPressEvent(QKeyEvent *event) override;
-
-	void mousePressEvent(QMouseEvent *event) override;
-
 	void handleSelectionChange();
 
 private:

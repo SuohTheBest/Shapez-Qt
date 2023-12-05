@@ -14,9 +14,14 @@ class ItemSender:public QObject,public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    ItemSender(int posx, int posy, QGraphicsScene* scene,int msec);
+    ItemSender(int posx, int posy,short towards, QGraphicsScene* scene,int mse=1000);
     void reconnect();
     bool is_full;
+	short towards;
+    int type() const override
+	{
+        return 22;
+	}
 public slots:
     void get_item(BasicItems* Item);
     void connect_with_getter();//itemsender与itemgetter应当重合

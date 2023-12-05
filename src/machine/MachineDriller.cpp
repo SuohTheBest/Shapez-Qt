@@ -7,13 +7,14 @@ MachineDriller::MachineDriller(QGraphicsScene *scene, QPointF &pos, short toward
     foreach (QGraphicsItem* item, allItems) {
         if (item->zValue() == 0 && item->pos() == pos) {
             MapBlockItem* block=dynamic_cast<MapBlockItem*>(item);
-            item_id=block->type;
+            item_id=block->item_type;
             break;
         }
     }
     if (item_id==-1)qDebug()<<"Error,could not find item id.";
 	timer = new QTimer(this);
-	sender = new ItemSender(this->pos().x(), this->pos().y(), scene, DRILLER_TIME);
+	sender = new ItemSender(this->pos().x(), this->pos().y(),towards, scene);
+    qDebug()<<"sender inited:"<<&sender;
 	connect(this, SIGNAL(item_drilled(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(drill()));
 	timer->start(DRILLER_TIME);

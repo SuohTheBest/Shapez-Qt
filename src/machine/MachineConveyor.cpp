@@ -1,19 +1,16 @@
 #include "MachineConveyor.h"
 
-::int8_t MachineConveyor::position_array[4][2] = {{1,  0},
-												  {0,  -1},
-												  {-1, 0},
-												  {0,  1}};
-
 MachineConveyor::MachineConveyor(QGraphicsScene *scene, QPointF &pos, short towards) :
 		MachineBase(4, QPixmap(QString::fromStdString(img_path(4))), scene, pos,towards) {
 	timer_running = false;
 	timer = new QTimer(this);
 	speed = 5;
 	qDebug() << this->pos().x() << " " << this->pos().y();
-	getter = new ItemGetter(this->pos().x() - position_array[towards][0] * 44,
-							this->pos().y() - position_array[towards][1] * 44, scene);
-	sender = new ItemSender(this->pos().x(), this->pos().y(), scene, 1000);
+	getter = new ItemGetter(this->pos().x() - position[towards][0] * 44,
+							this->pos().y() - position[towards][1] * 44,towards, scene);
+    qDebug()<<"getter inited:"<<&getter;
+	sender = new ItemSender(this->pos().x(), this->pos().y(),towards, scene, 1000);
+    qDebug()<<"sender inited:"<<&sender;
 	connect(getter, SIGNAL(item_get(BasicItems * )), this, SLOT(add_item(BasicItems * )));
 	connect(this, SIGNAL(remove_item(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(move_item()));
@@ -33,12 +30,14 @@ void MachineConveyor::move_item() {
 			if (sender->is_full) return;
 			else {
 				emit remove_item(item);
-				items.removeOne(item);
+                items.dequeue();
 				if (getter->is_full) getter->is_full = false;
 			}
+		} else
+		{
+			item->moveBy(speed * position[towards][0], speed * position[towards][1]);
+			item->pixels_moved += speed;
 		}
-		item->moveBy(speed * position_array[towards][0], speed * position_array[towards][1]);
-		item->pixels_moved += speed;
 	}
 }
 

@@ -32,9 +32,14 @@ public:
     int size_y();
     string detail_info();
     string img_path();
-    static string img_path(int type);
+    static string img_path(int item_type);
+    int type() const override
+	{
+        return 21;
+	}
     //void place(QGraphicsScene* scene,int rotate_count);// 0~3
 protected:
+	const static int position[4][2];
     short towards;
     QGraphicsScene *scene;
 };

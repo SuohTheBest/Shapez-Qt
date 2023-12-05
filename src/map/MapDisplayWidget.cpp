@@ -53,7 +53,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	}
 
 	//设置layout
-	view->resize(64 * 44, 64 * 44);
+    view->setSceneRect(0, 0, 64*44, 64*44);
 	construction_button = new ConstructionButton(scene);
 	layout_main = new QHBoxLayout();
 	layout_main->addWidget(view);
@@ -81,6 +81,7 @@ void MapDisplayWidget::handleSelectionChange() {
 			selectedItems[i]->setSelected(false);
 		}
 	}
+    if(selectedItems.size()==0)return;
 	QGraphicsItem *item = selectedItems[0];
 	QPointF pos = item->pos();
 	if(item->zValue()==0)//地图上的物品
@@ -130,13 +131,4 @@ void MapDisplayWidget::handleSelectionChange() {
 		}
 		construction_button->machine_id = -1;
 	}
-}
-
-
-void MapDisplayWidget::keyPressEvent(QKeyEvent *event) {
-	//TODO
-}
-
-void MapDisplayWidget::mousePressEvent(QMouseEvent *event) {
-	//TODO
 }

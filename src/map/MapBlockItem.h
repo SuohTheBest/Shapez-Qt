@@ -8,9 +8,13 @@ class MapBlockItem:public QGraphicsPixmapItem{
 public:
     using QGraphicsPixmapItem::QGraphicsPixmapItem;
     // 默认为0
-    void set_type(int type);
+    void set_type(int item_type);
+    int type() const override
+    {
+        return 20;
+    }
     string detail_info();
-    int type=0;
+    int item_type=0;
 
 private:
     static string info[TYPE_OF_BLOCKS];
