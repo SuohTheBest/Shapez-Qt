@@ -23,6 +23,7 @@ SOURCES += \
     src/action/ConstructionButton.cpp \
     src/action/RotateButton.cpp \
     src/action/SaveHelper.cpp \
+    src/item/ItemBase.cpp \
     src/item/MachineShadow.cpp \
     src/machine/ItemGetter.cpp \
     src/machine/ItemSender.cpp \

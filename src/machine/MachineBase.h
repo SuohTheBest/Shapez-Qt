@@ -30,7 +30,7 @@ public:
     };
     int size_x();
     int size_y();
-    string detail_info();
+    virtual string detail_info();
     string img_path();
     static string img_path(int item_type);
     int type() const override

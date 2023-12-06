@@ -13,6 +13,5 @@ MachineBase *MachineRubbishBin::to_base(QGraphicsScene *scene, QPointF &pos, sho
 }
 
 void MachineRubbishBin::destory_item(BasicItems* item) {
-	scene->removeItem(item);
 	delete item;
 }

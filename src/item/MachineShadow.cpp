@@ -2,7 +2,7 @@
 #include "math.h"
 #include "../BaseDefinitions.h"
 
-const int machine_size[TYPES_OF_MACHINES][2] = {{4, 4},
+const int machine_size[TYPES_OF_MACHINES][2] = {{2, 2},
 												{2, 1},
 												{1, 1},
 												{1, 1},

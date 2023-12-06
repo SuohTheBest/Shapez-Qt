@@ -17,7 +17,7 @@ public:
     int item_type=0;
 
 private:
-    static string info[TYPE_OF_BLOCKS];
+    static string info[TYPES_OF_BLOCKS];
 };
 
 #endif // MAPBLOCKITEM_H

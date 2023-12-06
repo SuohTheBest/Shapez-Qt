@@ -32,3 +32,7 @@ void MachineDriller::drill() {
 	scene->addItem(new_item);
 	emit item_drilled(new_item);
 }
+
+string MachineDriller::detail_info() {
+	return MachineBase::detail_info()+"\nitem_id:"+ to_string(item_id);
+}

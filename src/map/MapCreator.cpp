@@ -44,7 +44,7 @@ void MapCreator::createMap() {
         mkdir("./data/playerdata");
     }
     memset(map, 0, sizeof(map));
-    for (int j=1;j<TYPE_OF_BLOCKS;j++)
+    for (int j=1;j<TYPES_OF_BLOCKS;j++)
     {
     for (int i = 0; i < 10; i++) {//TODO
         int x, y, max_spread = 10;
