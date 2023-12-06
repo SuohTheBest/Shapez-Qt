@@ -15,7 +15,7 @@ string MachineBase::img_path()
 
 string MachineBase::detail_info()
 {
-    return machine_info[machine_id];
+    return machine_info[machine_id]+"\npos:"+ to_string(pos().x())+" "+ to_string(pos().y());
 }
 
 string MachineBase::img_path(int type) {

@@ -48,3 +48,6 @@ void ItemSender::get_item(BasicItems *Item) {
 void ItemSender::reconnect() {
 	timer->start(msec);
 }
+
+ItemSender::ItemSender(QPointF pos, short towards, QGraphicsScene *scene):
+		ItemSender(pos.x(),pos.y(),towards,scene) {};

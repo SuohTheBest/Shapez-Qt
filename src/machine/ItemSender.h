@@ -14,8 +14,9 @@ class ItemSender:public QObject,public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    ItemSender(int posx, int posy,short towards, QGraphicsScene* scene,int mse=1000);
-    void reconnect();
+    ItemSender(int posx, int posy,short towards, QGraphicsScene* scene,int msec=1000);
+    ItemSender(QPointF pos,short towards,QGraphicsScene *scene);
+	void reconnect();
     bool is_full;
 	short towards;
     int type() const override
