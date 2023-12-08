@@ -32,6 +32,8 @@ public slots:
 
 	void get_item(BasicItems *Item);
 
+	void check_is_full();
+
 	void connect_with_getter();//itemsender与itemgetter应当重合
 signals:
 
@@ -40,6 +42,7 @@ signals:
 private:
 	QGraphicsScene *scene;
 	QTimer *timer;
+	QTimer *wait_timer;
 	ItemGetter *getter;
 	int msec;
 };

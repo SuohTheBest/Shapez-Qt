@@ -25,7 +25,7 @@ void MachineConveyor::move_item() {
 		timer->stop();
 		return;
 	}
-	if (distance(items[0]->pos(), end_pos()) <= 0) {
+	if (distance(QPointF(mid_pos(items[0])), end_pos()) <= 0) {
 		if (!sender->is_full) {
 			emit remove_item(items[0]);
 			items[0]->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
@@ -35,19 +35,30 @@ void MachineConveyor::move_item() {
 	}
 	for (int i = 0; i < items.size(); i++) {
 		BasicItems *item = items[i];
-		if ((i > 0 && is_distance_enough(item->pos(), items[i - 1]->pos())) ||
-			 (i == 0 && distance(item->pos(), end_pos()) > 0)) {
-			QPointF mid(pos().x() + 22, pos().y() + 22);
-			int distance_to_mid = position[towards][0] * (mid.x() - item->x() - 9) +
-								  position[towards][1] * (mid.y() - item->y() - 9);
-			if (towards != sender->towards && distance_to_mid < 0) {
-				item->setPos(pos().x() + 22 - 9, pos().y() + 22 - 9);
-				distance_to_mid = 0;
+		QPointF mid(pos().x() + 22, pos().y() + 22);
+		int distance_to_mid = position[towards][0] * (mid.x() - item->x() - 9) +
+							  position[towards][1] * (mid.y() - item->y() - 9);
+		if (distance_to_mid <= 0) {
+			if (position[sender->towards][0] == 0 && item->pos().x() != mid.x() - 9) {
+				item->setPos(mid.x() - 9, item->pos().y());
+			} else if (position[sender->towards][1] == 0 && item->pos().y() != mid.y() - 9) {
+				item->setPos(item->pos().x(), mid.y() - 9);
 			}
+		} else {
+			if (position[towards][0] == 0 && item->pos().x() != mid.x() - 9) {
+				item->setPos(mid.x() - 9, item->pos().y());
+			} else if (position[towards][1] == 0 && item->pos().y() != mid.y() - 9) {
+				item->setPos(item->pos().x(), mid.y() - 9);
+			}
+		}
+		if ((i > 0 && is_distance_enough(item->pos(), items[i - 1]->pos())) ||
+			(i == 0 && distance(mid_pos(item), end_pos()) > 0)) {
+			distance_to_mid = position[towards][0] * (mid.x() - item->x() - 9) +
+							  position[towards][1] * (mid.y() - item->y() - 9);
 			if (distance_to_mid <= 0) {
-				item->moveBy(speed * position[towards][0], speed * position[towards][1]);
-			} else {
 				item->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
+			} else {
+				item->moveBy(speed * position[towards][0], speed * position[towards][1]);
 			}
 		}
 	}
@@ -63,13 +74,17 @@ void MachineConveyor::add_item(BasicItems *new_item) {
 		timer->start(50);
 	}
 	items.append(new_item);
+	if (items.size() >= MAX_ITEM_HOLD) {
+		getter->is_full = true;
+	}
 }
 
 string MachineConveyor::detail_info() {
 	return MachineBase::detail_info() + "\ntimer_running:" + to_string(timer_running) + "\nspeed:" +
 		   to_string(speed) + "\nitem in queue:" + to_string(items.size()) + "\ntowards:" + to_string(towards) +
 		   "\nsender_towards:" + to_string(sender->towards) + "\nend_pos:" + to_string(end_pos().x()) + " " +
-		   to_string(end_pos().y());
+		   to_string(end_pos().y()) + "\ngetter.is_full:" + to_string(getter->is_full) + "\nsender.is_full:" +
+		   to_string(sender->is_full);
 }
 
 void MachineConveyor::rotate() {
@@ -96,8 +111,8 @@ void MachineConveyor::rotate() {
 }
 
 QPointF MachineConveyor::end_pos() {
-	return QPointF(pos().x() + 22 + 28 * position[sender->towards][0],
-				   pos().y() + 22 + 28 * position[sender->towards][1]);
+	return QPointF(pos().x() + 22 + 22 * position[sender->towards][0],
+				   pos().y() + 22 + 22 * position[sender->towards][1]);
 }
 
 bool MachineConveyor::is_distance_enough(QPointF curr, QPointF prev) {
@@ -112,4 +127,8 @@ int MachineConveyor::distance(QPointF curr, QPointF prev) {
 		distance += position[sender->towards][0] * (prev.x() - curr.x()) +
 					position[sender->towards][1] * (prev.y() - curr.y());
 	return distance;
+}
+
+QPointF MachineConveyor::mid_pos(BasicItems *item) {
+	return QPointF(item->x() + 9.5, item->y() + 9.5);
 }

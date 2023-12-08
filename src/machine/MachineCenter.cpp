@@ -32,5 +32,5 @@ MachineBase *MachineCenter::to_base(QGraphicsScene *scene, QPointF &pos, short t
 }
 
 string MachineCenter::detail_info() {
-	return MachineBase::detail_info()+"\n"+"gold:"+ to_string(gold);
+	return MachineBase::detail_info() + "\n" + "gold:" + to_string(gold);
 }

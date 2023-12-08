@@ -15,7 +15,7 @@ public:
 
 	void set_disable();
 
-	void set_conveyor(MachineConveyor* conveyor);
+	void set_conveyor(MachineConveyor *conveyor);
 
 public slots:
 
@@ -23,7 +23,7 @@ public slots:
 
 private:
 	MachineShadow *shadow;
-	MachineConveyor* conveyor;
+	MachineConveyor *conveyor;
 	bool is_conveyor;
 };
 

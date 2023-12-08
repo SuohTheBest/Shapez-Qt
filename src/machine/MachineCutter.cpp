@@ -53,8 +53,8 @@ void MachineCutter::cut(BasicItems *item) {
 		case 0: {
 			item1 = new BasicItems(2);
 			item2 = new BasicItems(2);
-			item1->setPos(pos().x(),pos().y());
-			item2->setPos(pos().x()+44,pos().y());
+			item1->setPos(pos().x(), pos().y());
+			item2->setPos(pos().x() + 44, pos().y());
 			MachineBase::scene->addItem(item1);
 			MachineBase::scene->addItem(item2);
 			break;
@@ -65,4 +65,9 @@ void MachineCutter::cut(BasicItems *item) {
 	}
 	emit finish_cut_1(item1);
 	emit finish_cut_2(item2);
+}
+
+string MachineCutter::detail_info() {
+	return MachineBase::detail_info() + "\nsender0.is_full:" + to_string(sender[0]->is_full) + "\nsender1.is_full" +
+		   to_string(sender[1]->is_full);
 }

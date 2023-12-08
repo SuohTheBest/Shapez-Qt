@@ -9,9 +9,11 @@ ItemSender::ItemSender(int posx, int posy, short towards, QGraphicsScene *scene,
 	this->setPos(posx, posy);
 	qDebug() << "Sender_pos:" << this->pos() << "towards:" << towards;
 	timer = new QTimer(this);
+	wait_timer = new QTimer(this);
 	getter = nullptr;
-    is_full = true;
+	is_full = true;
 	connect(timer, SIGNAL(timeout()), this, SLOT(connect_with_getter()));
+	connect(wait_timer, SIGNAL(timeout()), this, SLOT(check_is_full()));
 	scene->addItem(this);
 	timer->start(msec);
 };
@@ -26,21 +28,23 @@ void ItemSender::connect_with_getter() {
 				qDebug() << this->pos() << "Connected!" << getter->pos();
 				timer->stop();
 				connect(this, SIGNAL(item_get(BasicItems * )), getter, SLOT(get_item(BasicItems * )));
-                is_full=false;
+				is_full = false;
 			}
 		}
 }
 
 void ItemSender::get_item(BasicItems *Item) {
-	if (getter == nullptr || getter->is_full) {
+	emit item_get(Item);
+	if (getter->is_full) {
 		is_full = true;
+		wait_timer->start(500);
 	} else {
-		emit item_get(Item);
+		is_full = false;
 	}
 }
 
 void ItemSender::reconnect() {
-    is_full=true;
+	is_full = true;
 	if (getter == nullptr);
 	else {
 		disconnect(this, SIGNAL(item_get(BasicItems * )), getter, SLOT(get_item(BasicItems * )));
@@ -50,4 +54,10 @@ void ItemSender::reconnect() {
 }
 
 ItemSender::ItemSender(QPointF pos, short towards, QGraphicsScene *scene) :
-		ItemSender(pos.x(), pos.y(), towards, scene) {};
+		ItemSender(pos.x(), pos.y(), towards, scene) {}
+
+void ItemSender::check_is_full() {
+	if (getter == nullptr || getter->is_full)return;
+	is_full = false;
+	wait_timer->stop();
+};

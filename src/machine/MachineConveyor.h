@@ -39,6 +39,8 @@ private:
 
 	QPointF end_pos();
 
+	QPointF mid_pos(BasicItems *item);
+
 	int distance(QPointF curr, QPointF prev);
 
 	bool is_distance_enough(QPointF curr, QPointF prev);
