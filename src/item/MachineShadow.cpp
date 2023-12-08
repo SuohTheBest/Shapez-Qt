@@ -46,7 +46,7 @@ void MachineShadow::setup(QPointF pos, int machine_id) {
 	rect->setOpacity(0.2);
 	QPixmap pixmap("./img/button/towards.png");
 	arrow = new QGraphicsPixmapItem(pixmap);
-	arrow->setPos(22 * size_x - 22, 22 * size_y - 22);
+	arrow->setPos(22 * size_x - 11, 22 * size_y - 18);
 	group = new QGraphicsItemGroup();
 	group->addToGroup(rect);
 	group->addToGroup(arrow);

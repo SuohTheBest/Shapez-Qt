@@ -3,6 +3,7 @@
 
 #include "QPushButton"
 #include "../item/MachineShadow.h"
+#include "../machine/MachineConveyor.h"
 
 class RotateButton : public QPushButton {
 public:
@@ -14,12 +15,16 @@ public:
 
 	void set_disable();
 
+	void set_conveyor(MachineConveyor* conveyor);
+
 public slots:
 
 	void on_clicked();
 
 private:
 	MachineShadow *shadow;
+	MachineConveyor* conveyor;
+	bool is_conveyor;
 };
 
 #endif //PROJDRILL_ROTATEBUTTON_H

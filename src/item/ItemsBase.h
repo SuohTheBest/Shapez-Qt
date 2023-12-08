@@ -19,12 +19,12 @@ class BasicItems : public QGraphicsPixmapItem {
 public:
 	BasicItems(int item_id) :
 			QGraphicsPixmapItem(QPixmap(QString::fromStdString("./img/item/" + to_string(item_id) + ".png")), nullptr)
-			, item_id(item_id), value(item_value[item_id]), pixels_moved(0), could_cut(item_could_cut[item_id]) {
-		this->setZValue(5);
+			, item_id(item_id), value(item_value[item_id]),could_cut(item_could_cut[item_id]) {
+		this->setZValue(2);
 	};
 
 	~BasicItems() {
-		scene()->removeItem(this);
+        if(scene()!=nullptr)scene()->removeItem(this);
 	}
 
 	int type() const override {
@@ -33,7 +33,6 @@ public:
 
 	short item_id;
 	short value;
-	short pixels_moved;
 	bool could_cut;
 };
 

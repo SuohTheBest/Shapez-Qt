@@ -24,7 +24,6 @@ public:
 	bool is_setup;
 private:
 	void _destory_real();
-
 	QGraphicsRectItem *rect;
 	QGraphicsPixmapItem *arrow;
 	QGraphicsItemGroup *group;

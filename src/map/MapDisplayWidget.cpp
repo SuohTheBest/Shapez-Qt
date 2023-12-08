@@ -87,6 +87,7 @@ void MapDisplayWidget::handleSelectionChange() {
 		{
 			MapBlockItem *map_block = dynamic_cast<MapBlockItem *>(item);
 			if (map_block) {
+				if(shadow->is_setup)rotate_button->set_disable();
 				basic_info->setText(QString::fromStdString(map_block->detail_info()));
 				return;
 			}
@@ -121,5 +122,12 @@ void MapDisplayWidget::handleSelectionChange() {
 		construction_button->machine_id = -1;
 		MachineBase *machine = dynamic_cast<MachineBase *>(item);
 		debug_message->setText(QString::fromStdString(machine->detail_info()));
+		if(machine->machine_id==4)
+		{
+			rotate_button->set_conveyor(dynamic_cast<MachineConveyor *>(item));
+		} else
+		{
+			rotate_button->set_disable();
+		}
 	}
 }

@@ -1,6 +1,6 @@
 #ifndef MACHINECONVEYOR_H
 #define MACHINECONVEYOR_H
-#define MAX_ITEM_HOLD 9
+#define MAX_ITEM_HOLD 7
 #define CONVEYOR_TIMER_MSEC 80
 
 #include "MachineBase.h"
@@ -16,6 +16,8 @@ public:
 
 	string detail_info() override;
 
+	void rotate();
+
 	QTimer *timer;
 public slots:
 
@@ -29,11 +31,17 @@ signals:
 
 private:
 	QQueue<BasicItems *> items;
-	static ::int8_t position_array[4][2];
 	bool timer_running;
 	short speed;
+	short turns;
 	ItemGetter *getter;
 	ItemSender *sender;
+
+	QPointF end_pos();
+
+	int distance(QPointF curr, QPointF prev);
+
+	bool is_distance_enough(QPointF curr, QPointF prev);
 };
 
 #endif // MACHINECONVEYOR_H

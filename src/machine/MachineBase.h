@@ -25,7 +25,7 @@ public:
         this->setTransformOriginPoint(22*machine_size[machine_id][0],22*machine_size[machine_id][0]);
         this->setPos(pos);
         this->setFlag(this->ItemIsSelectable,true);
-        this->setZValue(1);
+        this->setZValue(3);
 		this->setRotation(90*towards);
     };
     int size_x();

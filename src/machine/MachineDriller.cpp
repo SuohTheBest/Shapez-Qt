@@ -2,19 +2,18 @@
 
 MachineDriller::MachineDriller(QGraphicsScene *scene, QPointF &pos, short towards) :
 		MachineBase(3, QPixmap(QString::fromStdString(img_path(3))), scene, pos, towards) {
-    QList<QGraphicsItem*> allItems = scene->items();
-    item_id=-1;
-    foreach (QGraphicsItem* item, allItems) {
-        if (item->zValue() == 0 && item->pos() == pos) {
-            MapBlockItem* block=dynamic_cast<MapBlockItem*>(item);
-            item_id=block->item_type;
-            break;
-        }
-    }
-    if (item_id==-1)qDebug()<<"Error,could not find item id.";
+	QList<QGraphicsItem *> allItems = scene->items();
+	item_id = -1;
+			foreach (QGraphicsItem *item, allItems) {
+			if (item->zValue() == 0 && item->pos() == pos) {
+				MapBlockItem *block = dynamic_cast<MapBlockItem *>(item);
+				item_id = block->item_type;
+				break;
+			}
+		}
 	timer = new QTimer(this);
-	sender = new ItemSender(this->pos().x(), this->pos().y(),towards, scene);
-    qDebug()<<"sender inited:"<<&sender;
+	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene);
+	qDebug() << "sender inited:" << &sender;
 	connect(this, SIGNAL(item_drilled(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(drill()));
 	timer->start(DRILLER_TIME);
@@ -27,12 +26,32 @@ MachineBase *MachineDriller::to_base(QGraphicsScene *scene, QPointF &pos, short 
 void MachineDriller::drill() {
 	if (sender->is_full)return;
 	BasicItems *new_item = new BasicItems(item_id);
-	new_item->setPos(this->pos().x() + 25, this->pos().y() + 13);
-    qDebug() << "drill!"<<new_item->pos() << item_id;
-	scene->addItem(new_item);
+	switch (towards) {
+		case 0: {
+			new_item->setPos(pos().x() + 13, pos().y() + 13);
+			break;
+		}
+		case 1: {
+			new_item->setPos(pos().x() + 13, pos().y() + 25);
+			break;
+		}
+		case 2: {
+			new_item->setPos(pos().x() + 25, pos().y() + 13);
+			break;
+		}
+		case 3: {
+			new_item->setPos(pos().x() + 13, pos().y());
+			break;
+		}
+		default:
+			break;
+	}
+	qDebug() << "drill!" << new_item->pos() << item_id;
 	emit item_drilled(new_item);
+	if (sender->is_full)delete new_item;
+	else MachineBase::scene->addItem(new_item);
 }
 
 string MachineDriller::detail_info() {
-	return MachineBase::detail_info()+"\nitem_id:"+ to_string(item_id);
+	return MachineBase::detail_info() + "\nitem_id:" + to_string(item_id) + "\nis_full:" + to_string(sender->is_full);
 }
