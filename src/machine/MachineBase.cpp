@@ -3,6 +3,8 @@
 #include "MachineRubbishBin.h"
 #include "MachineDriller.h"
 #include "MachineConveyor.h"
+#include "MachineBase.h"
+
 
 const int MachineBase::machine_size[TYPES_OF_MACHINES][2] = {{2, 2},
 															 {2, 1},
@@ -41,4 +43,8 @@ int MachineBase::size_x() {
 
 int MachineBase::size_y() {
 	return machine_size[machine_id][1];
+}
+
+bool MachineBase::is_legal(BasicItems *item) {
+	return true;
 }

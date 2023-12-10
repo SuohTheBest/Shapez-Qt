@@ -37,7 +37,7 @@ void ItemSender::get_item(BasicItems *Item) {
 	emit item_get(Item);
 	if (getter->is_full) {
 		is_full = true;
-		wait_timer->start(500);
+		wait_timer->start(250);
 	} else {
 		is_full = false;
 	}

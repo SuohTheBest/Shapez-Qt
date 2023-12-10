@@ -46,7 +46,10 @@ MachineBase *MachineCutter::to_base(QGraphicsScene *scene, QPointF &pos, short t
 }
 
 void MachineCutter::cut(BasicItems *item) {
-	if (!item->could_cut)return;//TODO:IS_FULL
+	if (!item->could_cut || sender[0]->is_full || sender[1]->is_full) {
+		getter->set_full(600);
+		return;
+	}
 	BasicItems *item1;
 	BasicItems *item2;
 	switch (item->item_id) {
@@ -65,9 +68,10 @@ void MachineCutter::cut(BasicItems *item) {
 	}
 	emit finish_cut_1(item1);
 	emit finish_cut_2(item2);
+	getter->set_full(600);
 }
 
 string MachineCutter::detail_info() {
-	return MachineBase::detail_info() + "\nsender0.is_full:" + to_string(sender[0]->is_full) + "\nsender1.is_full" +
+	return MachineBase::detail_info() + "\nsender0.is_full:" + to_string(sender[0]->is_full) + "\nsender1.is_full:" +
 		   to_string(sender[1]->is_full);
 }

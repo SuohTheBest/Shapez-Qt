@@ -38,6 +38,8 @@ public:
 
 	virtual string detail_info();
 
+	virtual bool is_legal(BasicItems* item);
+
 	string img_path();
 
 	static string img_path(int item_type);
