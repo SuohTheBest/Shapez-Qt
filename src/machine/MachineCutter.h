@@ -11,6 +11,8 @@ public:
 	static MachineBase *to_base(QGraphicsScene *scene, QPointF &pos, short towards);
 
 	string detail_info()override;
+
+	bool is_legal(BasicItems* item)override;
 public slots:
 
 	void cut(BasicItems *item);

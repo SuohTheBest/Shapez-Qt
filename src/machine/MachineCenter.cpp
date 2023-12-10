@@ -6,16 +6,16 @@ MachineCenter::MachineCenter(QGraphicsScene *scene, QPointF &pos, short towards)
 	this->level = 1;
 	int size = level + 1;
 	for (int i = 0; i < level + 1; ++i) {
-		getter.push_back(new ItemGetter(pos.x() + 44 * i, pos.y() - 44, 2, scene));
+		getter.push_back(new ItemGetter(pos.x() + 44 * i, pos.y() - 44, 2, scene, this));
 	}
 	for (int i = 0; i < level + 1; ++i) {
-		getter.push_back(new ItemGetter(pos.x() + 44 * size, pos.y() + 44 * i, 3, scene));
+		getter.push_back(new ItemGetter(pos.x() + 44 * size, pos.y() + 44 * i, 3, scene, this));
 	}
 	for (int i = 0; i < level + 1; ++i) {
-		getter.push_back(new ItemGetter(pos.x() + 44 * size - 44 * i - 44, pos.y() + 44 * size, 0, scene));
+		getter.push_back(new ItemGetter(pos.x() + 44 * size - 44 * i - 44, pos.y() + 44 * size, 0, scene, this));
 	}
 	for (int i = 0; i < level + 1; ++i) {
-		getter.push_back(new ItemGetter(pos.x() - 44, pos.y() + 44 * i, 1, scene));
+		getter.push_back(new ItemGetter(pos.x() - 44, pos.y() + 44 * i, 1, scene, this));
 	}
 	for (int i = 0; i < getter.size(); ++i) {
 		connect(getter[i], SIGNAL(item_get(BasicItems * )), this, SLOT(get_items(BasicItems * )));

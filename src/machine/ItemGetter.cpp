@@ -1,9 +1,11 @@
 #include "ItemGetter.h"
+#include "MachineBase.h"
 
-ItemGetter::ItemGetter(int posx, int posy, short towards, QGraphicsScene *scene) :
-		QGraphicsRectItem(0, 0, 44, 44), towards(towards), scene(scene) {
+ItemGetter::ItemGetter(int posx, int posy, short towards, QGraphicsScene *scene,QObject* parent) :
+		QGraphicsRectItem(0, 0, 44, 44), towards(towards), scene(scene){
 	this->setZValue(3);//getter在sender上方
 	this->setBrush(Qt::blue);
+	this->setParent(parent);
 //        QGraphicsPixmapItem *item=new QGraphicsPixmapItem(QPixmap("./img/button/towards.png"));
 //        item->setPos(posx,posy);
 //        item->setTransformOriginPoint(22,22);
@@ -32,3 +34,9 @@ void ItemGetter::set_free() {
 	this->is_full= false;
 	timer->stop();
 }
+
+bool ItemGetter::check_is_leagl(BasicItems *item) {
+	MachineBase* parent=dynamic_cast<MachineBase*>(this->parent());
+	return parent->is_legal(item);
+}
+

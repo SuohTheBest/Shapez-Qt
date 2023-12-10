@@ -60,4 +60,9 @@ void ItemSender::check_is_full() {
 	if (getter == nullptr || getter->is_full)return;
 	is_full = false;
 	wait_timer->stop();
+}
+
+bool ItemSender::check_is_legal(BasicItems *item) {
+    if(getter==nullptr)return false;
+    return getter->check_is_leagl(item)&& !this->is_full;
 };

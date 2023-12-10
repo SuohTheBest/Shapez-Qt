@@ -34,6 +34,8 @@ public slots:
 
 	void check_is_full();
 
+	bool check_is_legal(BasicItems* item);
+
 	void connect_with_getter();//itemsender与itemgetter应当重合
 signals:
 

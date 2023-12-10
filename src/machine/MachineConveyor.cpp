@@ -8,7 +8,7 @@ MachineConveyor::MachineConveyor(QGraphicsScene *scene, QPointF &pos, short towa
 	turns = 0;
 	this->setZValue(1);
 	getter = new ItemGetter(this->pos().x() - position[towards][0] * 44,
-							this->pos().y() - position[towards][1] * 44, towards, scene);
+							this->pos().y() - position[towards][1] * 44, towards, scene, this);
 	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene, 1000);
 	connect(getter, SIGNAL(item_get(BasicItems * )), this, SLOT(add_item(BasicItems * )));
 	connect(this, SIGNAL(remove_item(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
@@ -26,7 +26,7 @@ void MachineConveyor::move_item() {
 		return;
 	}
 	if (distance(QPointF(mid_pos(items[0])), end_pos()) <= 0) {
-		if (!sender->is_full) {
+		if (sender->check_is_legal(items[0])) {
 			emit remove_item(items[0]);
 			items[0]->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
 			items.dequeue();
@@ -65,18 +65,18 @@ void MachineConveyor::move_item() {
 }
 
 void MachineConveyor::add_item(BasicItems *new_item) {
-	if (items.size() >= MAX_ITEM_HOLD) {
-		getter->is_full = true;
-		return;
-	}
+//	if (items.size() >= MAX_ITEM_HOLD) {
+//		getter->is_full = true;
+//		return;
+//	}
 	if (!timer_running) {
 		timer_running = true;
 		timer->start(50);
 	}
 	items.append(new_item);
-	if (items.size() >= MAX_ITEM_HOLD) {
-		getter->is_full = true;
-	}
+//	if (items.size() >= MAX_ITEM_HOLD) {
+//		getter->is_full = true;
+//	}
 }
 
 string MachineConveyor::detail_info() {
@@ -131,4 +131,9 @@ int MachineConveyor::distance(QPointF curr, QPointF prev) {
 
 QPointF MachineConveyor::mid_pos(BasicItems *item) {
 	return QPointF(item->x() + 9.5, item->y() + 9.5);
+}
+
+bool MachineConveyor::is_legal(BasicItems *item) {
+	if(items.size()>=MAX_ITEM_HOLD)return false;
+	else return true;
 }

@@ -5,28 +5,28 @@ MachineCutter::MachineCutter(QGraphicsScene *scene, QPointF &pos, short towards)
 	this->speed = 1000;
 	switch (towards) {
 		case 0: {
-			getter = new ItemGetter(pos.x(), pos.y() + 44, towards, scene);
+			getter = new ItemGetter(pos.x(), pos.y() + 44, towards, scene,this);
 			sender[0] = new ItemSender(pos, towards, scene);
 			sender[1] = new ItemSender(pos.x() + 44, pos.y(),
 									   towards, scene);
 			break;
 		}
 		case 1: {
-			getter = new ItemGetter(pos.x(), pos.y(), towards, scene);
+			getter = new ItemGetter(pos.x(), pos.y(), towards, scene,this);
 			sender[0] = new ItemSender(pos.x() + 44, pos.y(), towards, scene);
 			sender[1] = new ItemSender(pos.x() + 44, pos.y() + 44,
 									   towards, scene);
 			break;
 		}
 		case 2: {
-			getter = new ItemGetter(pos.x() + 44, pos.y(), towards, scene);
+			getter = new ItemGetter(pos.x() + 44, pos.y(), towards, scene,this);
 			sender[0] = new ItemSender(pos.x() + 44, pos.y() + 44, towards, scene);
 			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
 									   towards, scene);
 			break;
 		}
 		case 3: {
-			getter = new ItemGetter(pos.x() + 44, pos.y() + 44, towards, scene);
+			getter = new ItemGetter(pos.x() + 44, pos.y() + 44, towards, scene,this);
 			sender[0] = new ItemSender(pos, towards, scene);
 			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
 									   towards, scene);
@@ -46,10 +46,6 @@ MachineBase *MachineCutter::to_base(QGraphicsScene *scene, QPointF &pos, short t
 }
 
 void MachineCutter::cut(BasicItems *item) {
-	if (!item->could_cut || sender[0]->is_full || sender[1]->is_full) {
-		getter->set_full(600);
-		return;
-	}
 	BasicItems *item1;
 	BasicItems *item2;
 	switch (item->item_id) {
@@ -74,4 +70,11 @@ void MachineCutter::cut(BasicItems *item) {
 string MachineCutter::detail_info() {
 	return MachineBase::detail_info() + "\nsender0.is_full:" + to_string(sender[0]->is_full) + "\nsender1.is_full:" +
 		   to_string(sender[1]->is_full);
+}
+
+bool MachineCutter::is_legal(BasicItems *item) {
+	if (!item->could_cut || sender[0]->is_full || sender[1]->is_full) {
+		return false;
+	} else
+		return true;
 }

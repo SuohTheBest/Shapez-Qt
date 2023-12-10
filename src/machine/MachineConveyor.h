@@ -16,6 +16,8 @@ public:
 
 	string detail_info() override;
 
+	bool is_legal(BasicItems *item) override;
+
 	void rotate();
 
 	QTimer *timer;
