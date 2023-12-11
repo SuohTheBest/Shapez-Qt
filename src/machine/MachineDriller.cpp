@@ -25,7 +25,7 @@ MachineBase *MachineDriller::to_base(QGraphicsScene *scene, QPointF &pos, short 
 
 void MachineDriller::drill() {
 	if (sender->is_full)return;
-	BasicItems *new_item = new BasicItems(item_id);
+	BasicItems *new_item = new BasicItems(item_id,MachineBase::scene);
 	switch (towards) {//TODO:可以删掉
 		case 0: {
 			new_item->setPos(pos().x() + 13, pos().y() + 13);
@@ -48,7 +48,6 @@ void MachineDriller::drill() {
 	}
 	qDebug() << "drill!" << new_item->pos() << item_id;
 	emit item_drilled(new_item);
-	MachineBase::scene->addItem(new_item);
 }
 
 string MachineDriller::detail_info() {

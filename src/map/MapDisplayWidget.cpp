@@ -51,7 +51,6 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 			blockItem->setZValue(0);
 		}
 	}
-
 	//设置layout
 	view->setSceneRect(0, 0, 64 * 44, 64 * 44);
 	construction_button = new ConstructionButton(scene);
@@ -69,6 +68,8 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	layout_main->setSpacing(15);
 	setLayout(layout_main);
 	connect(scene, &QGraphicsScene::selectionChanged, this, &MapDisplayWidget::handleSelectionChange);
+	QPointF center_pos(30*44,30*44);
+	center=dynamic_cast<MachineCenter*>(MachineBase::to_base[0](scene, center_pos, 0));
 }
 
 void MapDisplayWidget::handleSelectionChange() {
@@ -108,7 +109,6 @@ void MapDisplayWidget::handleSelectionChange() {
 				rotate_button->set_disable();
 				return;
 			}
-			scene->addItem(new_machine);
 			machine_placed.append(new_machine);
 			construction_button->add_item_to_map(map_item_placed, new_machine);
 			construction_button->machine_id = -1;

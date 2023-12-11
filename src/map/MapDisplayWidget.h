@@ -19,6 +19,7 @@
 #include "../action/ConstructionButton.h"
 #include "../action/RotateButton.h"
 #include "../item/MachineShadow.h"
+#include "../machine/MachineCenter.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
@@ -42,6 +43,7 @@ private:
 	ConstructionButton *construction_button;
 	RotateButton *rotate_button;
 	MachineShadow *shadow;
+	MachineCenter *center;
 };
 
 #endif // MAPDISPLAYWIDGET_H

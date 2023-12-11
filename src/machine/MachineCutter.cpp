@@ -50,8 +50,8 @@ void MachineCutter::cut(BasicItems *item) {
 	BasicItems *item2;
 	switch (item->item_id) {
 		case 0: {
-			item1 = new BasicItems(2);
-			item2 = new BasicItems(2);
+            item1 = new BasicItems(2,scene);
+            item2 = new BasicItems(2,scene);
 			item1->setPos(sender[0]->pos().x()+22, sender[0]->pos().y()+22);
 			item2->setPos(sender[1]->pos().x()+22, sender[1]->pos().y()+22);
 			MachineBase::scene->addItem(item1);

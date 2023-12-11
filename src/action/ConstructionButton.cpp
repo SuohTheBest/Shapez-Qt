@@ -12,7 +12,7 @@ ConstructionButton::ConstructionButton(QGraphicsScene *scene, QWidget *parent) :
 	menu = new QMenu();
 	signalMapper = new QSignalMapper();
 	QAction *actions[TYPES_OF_MACHINES];
-	for (int i = 0; i < TYPES_OF_MACHINES; i++) {
+	for (int i = 1; i < TYPES_OF_MACHINES; i++) {
 		actions[i] = new QAction(QString::fromStdString(MachineBase::machine_info[i]));
 		menu->addAction(actions[i]);
 		signalMapper->setMapping(actions[i], i);//machine_id

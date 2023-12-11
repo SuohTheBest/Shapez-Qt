@@ -30,6 +30,7 @@ public:
 		this->setFlag(this->ItemIsSelectable, true);
 		this->setZValue(3);
 		this->setRotation(90 * towards);
+		scene->addItem(this);
 	};
 
 	int size_x();
