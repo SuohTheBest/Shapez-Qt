@@ -16,6 +16,7 @@ public:
     ~MainWindow();
 public slots:
     void start_game();
+    void load_game(short chosen);
 private:
     Ui::MainWindow *ui;
 };

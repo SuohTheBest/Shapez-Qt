@@ -2,6 +2,7 @@
 #define SAVEWIDGET_H
 
 #include <QWidget>
+#include <QString>
 
 namespace Ui {
 	class SaveWidget;
@@ -13,17 +14,29 @@ Q_OBJECT
 public:
 	explicit SaveWidget(QWidget *parent = nullptr);
 
+	void set_title(QString str);
+
+	void check_is_selectable();
+
 	~SaveWidget();
+
 public slots:
-    void button_clicked_1();
-    void button_clicked_2();
-    void button_clicked_3();
-    void button_clicked_4();
+
+	void button_clicked_1();
+
+	void button_clicked_2();
+
+	void button_clicked_3();
+
+	void button_clicked_4();
+
 signals:
-    void send_data(short data_chosen);
+
+	void send_data(short data_chosen);
+
 private:
 	Ui::SaveWidget *ui;
-    short data_chosen;
+	short data_chosen;
 };
 
 #endif // SAVEWIDGET_H

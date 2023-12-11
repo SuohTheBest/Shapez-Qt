@@ -24,7 +24,7 @@ MachineBase *MachineDriller::to_base(QGraphicsScene *scene, QPointF &pos, short 
 }
 
 void MachineDriller::drill() {
-	if (sender->is_full)return;
+	if(sender->is_full)return;
 	BasicItems *new_item = new BasicItems(item_id,MachineBase::scene);
 	switch (towards) {
 		case 0: {

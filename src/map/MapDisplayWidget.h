@@ -25,7 +25,9 @@
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
 public:
-	MapDisplayWidget(int layer, QWidget *parent);
+	MapDisplayWidget(int layer, QWidget *parent=nullptr);
+
+	MapDisplayWidget(short save_chosen);
 
 public slots:
 
@@ -38,8 +40,8 @@ protected:
 
 private:
 	int layer;
-	short map_item_placed[64][64];
-	short map[64][64];
+	short map_item_placed[64][64]={};//初始化应为-1
+	short map[64][64]={};
 	QList<MachineBase *> machine_placed;
 	QGraphicsScene *scene;
 	QGraphicsView *view;

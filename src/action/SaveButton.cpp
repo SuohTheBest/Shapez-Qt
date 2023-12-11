@@ -65,6 +65,7 @@ void SaveButton::save(short data_chosen) {
 		{
 			QJsonArray item_array;
 			MachineConveyor* conveyor=dynamic_cast<MachineConveyor*>(machine_item);
+			obj.insert("turns",conveyor->turns);
 			for(BasicItems* item:conveyor->items)
 			{
 				QJsonObject item_obj;

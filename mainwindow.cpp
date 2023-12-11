@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->resize(1123,855);
     setCentralWidget(menu);
     connect(menu,SIGNAL(game_start()),this,SLOT(start_game()));
+    connect(menu,SIGNAL(game_load(short)),this,SLOT(load_game(short)));
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +23,16 @@ MainWindow::~MainWindow()
 void MainWindow::start_game()
 {
     MapDisplayWidget* widget=new MapDisplayWidget(0,this);
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    widget->thread();
+    this->move( deskRect.x(), deskRect.y() );
+    this->resize( deskRect.right() - deskRect.x(), deskRect.bottom() - deskRect.y() );
+    setCentralWidget(widget);
+}
+
+void MainWindow::load_game(short chosen)
+{
+    MapDisplayWidget* widget=new MapDisplayWidget(chosen);
     QRect deskRect = QApplication::desktop()->availableGeometry();
     widget->thread();
     this->move( deskRect.x(), deskRect.y() );

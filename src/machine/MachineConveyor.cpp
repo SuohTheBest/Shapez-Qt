@@ -64,19 +64,19 @@ void MachineConveyor::move_item() {
 }
 
 void MachineConveyor::add_item(BasicItems *new_item) {
-//	if (items.size() >= MAX_ITEM_HOLD) {
-//		getter->is_full = true;
-//		return;
-//	}
+	if (items.size() >= MAX_ITEM_HOLD) {
+		getter->is_full = true;
+		return;
+	}
 	if (!timer_running) {
 		timer_running = true;
 		timer->start(50);
 	}
 	items.append(new_item);
-    new_item->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
-//	if (items.size() >= MAX_ITEM_HOLD) {
-//		getter->is_full = true;
-//	}
+    new_item->moveBy(speed * position[towards][0], speed * position[towards][1]);
+	if (items.size() >= MAX_ITEM_HOLD) {
+		getter->is_full = true;
+	}
 }
 
 string MachineConveyor::detail_info() {
@@ -145,4 +145,28 @@ void MachineConveyor::pause() {
 
 void MachineConveyor::restart() {
 	timer->start(50);
+}
+
+void MachineConveyor::rotate(int turns) {
+	this->turns=turns%3;
+	switch (turns) {
+		case 0: {
+			MachineBase::setPixmap(QPixmap("./img/machine/4.png"));
+			sender->towards=getter->towards;
+			break;
+		}
+		case 1: {
+			MachineBase::setPixmap(QPixmap("./img/machine/4-right.png"));
+			sender->towards=(getter->towards+1)%4;
+			break;
+		}
+		case 2: {
+			MachineBase::setPixmap(QPixmap("./img/machine/4-left.png"));
+			sender->towards=(getter->towards+3)%4;
+			break;
+		}
+		default:
+			break;
+	}
+	sender->reconnect();
 }

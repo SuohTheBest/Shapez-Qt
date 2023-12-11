@@ -7,16 +7,17 @@
 MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 		layer(layer) {
 	basic_info = new QLabel("details", this);
-	basic_info->setFixedSize(200, 50);
+	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	basic_info->setFixedHeight( 75);
 	rotate_button = new RotateButton();
-	save_button=new SaveButton(map,machine_placed);
-	connect(save_button, SIGNAL(pause()),this, SLOT(pause()));
+	save_button = new SaveButton(map, machine_placed);
+	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
 	connect(save_button, SIGNAL(restart()), this, SLOT(restart()));
 	QLabel *titleLabel = new QLabel("Debug");
-	titleLabel->setFixedSize(200, 30);
+	titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	titleLabel->setFixedHeight(30);
 	titleLabel->setAlignment(Qt::AlignCenter);
 	titleLabel->setStyleSheet("color: green;");
-
 	debug_message = new QTextEdit;
 	debug_message->setPlainText("");
 	debug_message->setReadOnly(true);
@@ -25,6 +26,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	view = new QGraphicsView(scene);
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
+
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 	if (access(map_path(layer).c_str(), F_OK) == -1) {
 		MapCreator *map = new MapCreator(layer);
@@ -64,19 +66,137 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	layout_tools = new QVBoxLayout();
 	QGridLayout *gridlayout = new QGridLayout;
 	layout_main->addLayout(layout_tools);
-	gridlayout->addWidget(construction_button,0,0);
-	gridlayout->addWidget(rotate_button,0,1);
-	gridlayout->addWidget(save_button,1,1);
+	gridlayout->addWidget(construction_button, 0, 0);
+	gridlayout->addWidget(rotate_button, 0, 1);
+	gridlayout->addWidget(save_button, 1, 1);
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
 	layout_tools->addWidget(debug_message);
+	layout_tools->setMargin(25);
 	layout_main->setSpacing(15);
 	setLayout(layout_main);
 	connect(scene, &QGraphicsScene::selectionChanged, this, &MapDisplayWidget::handleSelectionChange);
-	QPointF center_pos(30*44,30*44);
-	center=dynamic_cast<MachineCenter*>(MachineBase::to_base[0](scene, center_pos, 0));
+	QPointF center_pos(30 * 44, 30 * 44);
+	center = dynamic_cast<MachineCenter *>(MachineBase::to_base[0](scene, center_pos, 0));
 	machine_placed.append(center);
+}
+
+MapDisplayWidget::MapDisplayWidget(short save_chosen) :
+		layer(0) {
+	basic_info = new QLabel("details", this);
+	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	basic_info->setFixedHeight( 75);
+	rotate_button = new RotateButton();
+	save_button = new SaveButton(map, machine_placed);
+	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
+	connect(save_button, SIGNAL(restart()), this, SLOT(restart()));
+	QLabel *titleLabel = new QLabel("Debug");
+	titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	titleLabel->setFixedHeight(30);
+	titleLabel->setAlignment(Qt::AlignCenter);
+	titleLabel->setStyleSheet("color: green;");
+	debug_message = new QTextEdit;
+	debug_message->setPlainText("");
+	debug_message->setReadOnly(true);
+	scene = new QGraphicsScene();
+	shadow = new MachineShadow(scene);
+	view = new QGraphicsView(scene);
+	rotate_button->set_shadow(shadow);
+	scene->setBackgroundBrush(Qt::white);
+	memset(map_item_placed, -1, sizeof(map_item_placed));
+
+	string path = "./data/savedata/save0" + to_string(save_chosen);
+	ifstream map_in(path + "/map.txt");
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 64; j++) {
+			int temp;
+			map_in >> temp;
+			map[i][j] = temp;
+		}
+	}
+	map_in.close();
+	for (int i = 0; i < 64; ++i) {
+		for (int j = 0; j < 64; ++j) {
+			QPixmap block;
+			block.load(QString::fromStdString(pic_path(map[i][j])));
+			MapBlockItem *blockItem = new MapBlockItem(block);
+			scene->addItem(blockItem);
+			blockItem->setPos(j * block.width(), i * block.height());
+			blockItem->setFlag(blockItem->ItemIsSelectable, true);
+			blockItem->set_type(map[i][j]);
+			blockItem->setZValue(0);
+		}
+	}
+	view->setSceneRect(0, 0, 64 * 44, 64 * 44);
+	construction_button = new ConstructionButton(scene);
+	layout_main = new QHBoxLayout();
+	layout_main->addWidget(view);
+	basic_info->setAlignment(Qt::AlignCenter);
+	basic_info->setStyleSheet("background-color: gray; border: 1px solid black; padding: 5px;");
+	layout_tools = new QVBoxLayout();
+	QGridLayout *gridlayout = new QGridLayout;
+	layout_main->addLayout(layout_tools);
+	gridlayout->addWidget(construction_button, 0, 0);
+	gridlayout->addWidget(rotate_button, 0, 1);
+	gridlayout->addWidget(save_button, 1, 1);
+	layout_tools->addLayout(gridlayout);
+	layout_tools->addWidget(basic_info);
+	layout_tools->addWidget(titleLabel);
+	layout_tools->addWidget(debug_message);
+	layout_tools->setMargin(25);
+	layout_main->setSpacing(15);
+	setLayout(layout_main);
+	connect(scene, &QGraphicsScene::selectionChanged, this, &MapDisplayWidget::handleSelectionChange);
+	//需要加载map_item_placed
+	QFile data_file(QString::fromStdString(path + "/data.json"));
+	if (!data_file.open(QFile::ReadOnly | QFile::Text)) {
+		qDebug() << "Open error";
+		return;
+	}
+	QTextStream stream(&data_file);
+	stream.setCodec("UTF-8");
+	QString str = stream.readAll();
+	data_file.close();
+	QJsonParseError jsonError;
+	QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
+	if (jsonError.error != QJsonParseError::NoError && !doc.isNull()) {
+		qDebug() << "Json格式错误" << jsonError.error;
+		return;
+	}
+	QJsonObject root_obj = doc.object();
+	int i = 0;
+	for (;; i++) {
+		QJsonValue machine_val = root_obj.value(QString::fromStdString("machine" + to_string(i)));
+		if (machine_val.isNull() || machine_val.type() != QJsonValue::Object)break;
+		QJsonObject machine_obj = machine_val.toObject();
+		QPointF machine_pos = QPointF(machine_obj.value("pos").toArray().at(0).toInt(),
+									  machine_obj.value("pos").toArray().at(1).toInt());
+		MachineBase *new_machine =
+				MachineBase::to_base[machine_obj.value("machine_id").toInt()](scene, machine_pos,
+																			  machine_obj.value("towards").toInt());
+		machine_placed.append(new_machine);
+		construction_button->add_item_to_map(map_item_placed, new_machine);
+		if (new_machine->machine_id == 0) {
+			MachineCenter *center = dynamic_cast<MachineCenter *>(new_machine);
+			center->gold = machine_obj.value("gold").toInt();
+			this->center=center;
+		} else if (new_machine->machine_id == 4) {
+			MachineConveyor* conveyor=dynamic_cast<MachineConveyor*>(new_machine);
+			conveyor->rotate(machine_obj.value("turns").toInt());
+			QJsonArray items = machine_obj.value("items").toArray();
+			for (auto item: items) {
+				QJsonObject item_obj = item.toObject();
+				QPointF item_pos = QPointF(item_obj.value("pos").toArray().at(0).toInt(),
+										   item_obj.value("pos").toArray().at(1).toInt());
+				BasicItems* new_item=new BasicItems(item_obj.value("item_id").toInt(),scene);
+				new_item->setPos(item_pos);
+				conveyor->items.append(new_item);
+			}
+		}
+		new_machine->pause();
+	}
+	restart();
 }
 
 void MapDisplayWidget::handleSelectionChange() {
@@ -139,13 +259,13 @@ void MapDisplayWidget::handleSelectionChange() {
 }
 
 void MapDisplayWidget::pause() {
-	for (MachineBase* machine:machine_placed) {
+	for (MachineBase *machine: machine_placed) {
 		machine->pause();
 	}
 }
 
 void MapDisplayWidget::restart() {
-	for (MachineBase* machine:machine_placed) {
+	for (MachineBase *machine: machine_placed) {
 		machine->restart();
 	}
 }

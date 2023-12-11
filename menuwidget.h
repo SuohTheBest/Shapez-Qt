@@ -21,8 +21,14 @@ public slots:
 
 	void start_game();
 
+    void load_game();
+
+    void load_game_selected(short selected);
+
 signals:
     void game_start();
+
+    void game_load(short chosen);
 
 private:
 	Ui::MenuWidget *ui;

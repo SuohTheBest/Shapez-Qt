@@ -29,7 +29,7 @@
     </font>
    </property>
    <property name="text">
-    <string>存档</string>
+    <string>选择存档</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
