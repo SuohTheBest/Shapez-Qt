@@ -13,7 +13,7 @@ add_executable(projDrill
         src/map/MapDisplayWidget.h
         main.cpp
         projdrill.cpp
-        projdrill.h src/action/ConstructionButton.cpp src/machine/MachineBase.cpp src/machine/MachineCenter.h src/machine/MachineCenter.cpp src/machine/MachineCutter.cpp src/machine/MachineRubbishBin.cpp src/map/MapBlockItem.cpp src/machine/MachineConveyor.cpp src/machine/ItemGetter.h src/machine/ItemSender.h src/machine/ItemSender.cpp src/machine/ItemGetter.cpp src/machine/MachineDriller.cpp src/item/MachineShadow.h src/item/MachineShadow.cpp src/action/RotateButton.h src/action/RotateButton.cpp src/item/ItemBase.cpp)
+        projdrill.h src/action/ConstructionButton.cpp src/machine/MachineBase.cpp src/machine/MachineCenter.h src/machine/MachineCenter.cpp src/machine/MachineCutter.cpp src/machine/MachineRubbishBin.cpp src/map/MapBlockItem.cpp src/machine/MachineConveyor.cpp src/machine/ItemGetter.h src/machine/ItemSender.h src/machine/ItemSender.cpp src/machine/ItemGetter.cpp src/machine/MachineDriller.cpp src/item/MachineShadow.h src/item/MachineShadow.cpp src/action/RotateButton.h src/action/RotateButton.cpp src/item/ItemBase.cpp menuwidget.h menuwidget.cpp mainwindow.cpp mainwindow.h)
 
 find_package(Qt5 COMPONENTS
         Core

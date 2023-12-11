@@ -19,7 +19,8 @@ TARGET = test
 
 SOURCES += \
     main.cpp \
-    projdrill.cpp \
+    mainwindow.cpp \
+    menuwidget.cpp \
     src/action/ConstructionButton.cpp \
     src/action/RotateButton.cpp \
     src/action/SaveHelper.cpp \
@@ -35,10 +36,11 @@ SOURCES += \
     src/machine/MachineRubbishBin.cpp \
     src/map/MapBlockItem.cpp \
     src/map/MapCreator.cpp \
-    src/map/MapDisplayWidget.cpp
+    src/map/MapDisplayWidget.cpp \
 
 HEADERS += \
-    projdrill.h \
+    mainwindow.h \
+    menuwidget.h \
     src/BaseDefinitions.h \
     src/action/ConstructionButton.h \
     src/action/RotateButton.h \
@@ -55,12 +57,16 @@ HEADERS += \
     src/machine/MachineRubbishBin.h \
     src/map/MapBlockItem.h \
     src/map/MapCreator.h \
-    src/map/MapDisplayWidget.h
+    src/map/MapDisplayWidget.h \
 
 FORMS += \
-    projdrill.ui
+    mainwindow.ui \
+    menuwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc
