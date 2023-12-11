@@ -52,10 +52,11 @@ void MachineCutter::cut(BasicItems *item) {
 		case 0: {
 			item1 = new BasicItems(2);
 			item2 = new BasicItems(2);
-			item1->setPos(pos().x(), pos().y());
-			item2->setPos(pos().x() + 44, pos().y());
+			item1->setPos(sender[0]->pos().x()+22, sender[0]->pos().y()+22);
+			item2->setPos(sender[1]->pos().x()+22, sender[1]->pos().y()+22);
 			MachineBase::scene->addItem(item1);
 			MachineBase::scene->addItem(item2);
+			delete item;
 			break;
 		}
 		default: {
@@ -73,8 +74,8 @@ string MachineCutter::detail_info() {
 }
 
 bool MachineCutter::is_legal(BasicItems *item) {
-	if (!item->could_cut || sender[0]->is_full || sender[1]->is_full) {
-		return false;
-	} else
+	if (item->could_cut && sender[0]->check_is_legal(item) && sender[1]->check_is_legal(item)) {
 		return true;
+	} else
+		return false;
 }

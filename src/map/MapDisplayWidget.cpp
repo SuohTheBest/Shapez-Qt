@@ -105,6 +105,7 @@ void MapDisplayWidget::handleSelectionChange() {
 			if (construction_button->is_overlap(map_item_placed, new_machine)) {
 				construction_button->machine_id = -1;
 				delete new_machine;
+				rotate_button->set_disable();
 				return;
 			}
 			scene->addItem(new_machine);

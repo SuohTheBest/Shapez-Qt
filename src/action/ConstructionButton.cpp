@@ -41,8 +41,27 @@ bool ConstructionButton::is_overlap(short (&map)[64][64], MachineBase *new_item)
 	bool overlap = false;
 	int pos_x = new_item->x() / 44;
 	int pos_y = new_item->y() / 44;
-	for (int i = pos_x; i < pos_x + new_item->size_x(); i++) {
-		for (int j = pos_y; j < pos_y + new_item->size_y(); j++) {
+	int size_x = new_item->size_x();
+	int size_y = new_item->size_y();
+	if (new_item->machine_id == 1 && new_item->towards != 0) {
+		switch (new_item->towards) {
+			case 1: {
+				pos_x += 1;
+				swap(size_x, size_y);
+				break;
+			}
+			case 2: {
+				pos_y += 1;
+				break;
+			}
+			case 3: {
+				swap(size_x, size_y);
+				break;
+			}
+		}
+	}
+	for (int i = pos_x; i < pos_x + size_x; i++) {
+		for (int j = pos_y; j < pos_y + size_y; j++) {
 			if (map[i][j] != -1) {
 				overlap = true;
 				break;
@@ -55,8 +74,27 @@ bool ConstructionButton::is_overlap(short (&map)[64][64], MachineBase *new_item)
 void ConstructionButton::add_item_to_map(short (&map)[64][64], MachineBase *new_item) {
 	int pos_x = new_item->x() / 44;
 	int pos_y = new_item->y() / 44;
-	for (int i = pos_x; i < pos_x + new_item->size_x(); i++) {
-		for (int j = pos_y; j < pos_y + new_item->size_y(); j++) {
+	int size_x = new_item->size_x();
+	int size_y = new_item->size_y();
+	if (new_item->machine_id == 1 && new_item->towards != 0) {
+		switch (new_item->towards) {
+			case 1: {
+				pos_x += 1;
+				swap(size_x, size_y);
+				break;
+			}
+			case 2: {
+				pos_y += 1;
+				break;
+			}
+			case 3: {
+				swap(size_x, size_y);
+				break;
+			}
+		}
+	}
+	for (int i = pos_x; i < pos_x + size_x; i++) {
+		for (int j = pos_y; j < pos_y + size_y; j++) {
 			map[i][j] = new_item->machine_id;
 		}
 	}

@@ -38,7 +38,7 @@ public:
 
 	virtual string detail_info();
 
-	virtual bool is_legal(BasicItems* item);
+	virtual bool is_legal(BasicItems *item);
 
 	string img_path();
 
@@ -47,10 +47,11 @@ public:
 	int type() const override {
 		return 21;
 	}
-	//void place(QGraphicsScene* scene,int rotate_count);// 0~3
+
+	short towards;
 protected:
 	const static int position[4][2];
-	short towards;
+
 	QGraphicsScene *scene;
 };
 

@@ -28,7 +28,6 @@ void MachineConveyor::move_item() {
 	if (distance(QPointF(mid_pos(items[0])), end_pos()) <= 0) {
 		if (sender->check_is_legal(items[0])) {
 			emit remove_item(items[0]);
-			items[0]->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
 			items.dequeue();
 			if (getter->is_full) getter->is_full = false;
 		}
@@ -74,6 +73,7 @@ void MachineConveyor::add_item(BasicItems *new_item) {
 		timer->start(50);
 	}
 	items.append(new_item);
+    new_item->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
 //	if (items.size() >= MAX_ITEM_HOLD) {
 //		getter->is_full = true;
 //	}
