@@ -48,3 +48,7 @@ int MachineBase::size_y() {
 bool MachineBase::is_legal(BasicItems *item) {
 	return true;
 }
+
+void MachineBase::pause() { return; }
+
+void MachineBase::restart() { return; }

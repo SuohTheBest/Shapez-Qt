@@ -6,8 +6,8 @@ ConstructionButton::ConstructionButton(QGraphicsScene *scene, QWidget *parent) :
 	this->machine_id = -1;
 	this->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	this->setToolTip("建造");
-	this->setIconSize(QSize(64, 64));
-	this->setIcon(QIcon("./img/button/construction.jpg"));
+	this->setIconSize(QSize(136, 136));
+	this->setIcon(QIcon("./img/button/construction.png"));
 	this->setPopupMode(QToolButton::InstantPopup);
 	menu = new QMenu();
 	signalMapper = new QSignalMapper();

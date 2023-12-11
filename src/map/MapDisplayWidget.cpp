@@ -9,6 +9,9 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	basic_info = new QLabel("details", this);
 	basic_info->setFixedSize(200, 50);
 	rotate_button = new RotateButton();
+	save_button=new SaveButton(map,machine_placed);
+	connect(save_button, SIGNAL(pause()),this, SLOT(pause()));
+	connect(save_button, SIGNAL(restart()), this, SLOT(restart()));
 	QLabel *titleLabel = new QLabel("Debug");
 	titleLabel->setFixedSize(200, 30);
 	titleLabel->setAlignment(Qt::AlignCenter);
@@ -59,9 +62,12 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	basic_info->setAlignment(Qt::AlignCenter);
 	basic_info->setStyleSheet("background-color: gray; border: 1px solid black; padding: 5px;");
 	layout_tools = new QVBoxLayout();
+	QGridLayout *gridlayout = new QGridLayout;
 	layout_main->addLayout(layout_tools);
-	layout_tools->addWidget(construction_button);
-	layout_tools->addWidget(rotate_button);
+	gridlayout->addWidget(construction_button,0,0);
+	gridlayout->addWidget(rotate_button,0,1);
+	gridlayout->addWidget(save_button,1,1);
+	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
 	layout_tools->addWidget(debug_message);
@@ -70,6 +76,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	connect(scene, &QGraphicsScene::selectionChanged, this, &MapDisplayWidget::handleSelectionChange);
 	QPointF center_pos(30*44,30*44);
 	center=dynamic_cast<MachineCenter*>(MachineBase::to_base[0](scene, center_pos, 0));
+	machine_placed.append(center);
 }
 
 void MapDisplayWidget::handleSelectionChange() {
@@ -128,5 +135,17 @@ void MapDisplayWidget::handleSelectionChange() {
 		} else {
 			rotate_button->set_disable();
 		}
+	}
+}
+
+void MapDisplayWidget::pause() {
+	for (MachineBase* machine:machine_placed) {
+		machine->pause();
+	}
+}
+
+void MapDisplayWidget::restart() {
+	for (MachineBase* machine:machine_placed) {
+		machine->restart();
 	}
 }

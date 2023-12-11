@@ -13,6 +13,10 @@ public:
 	string detail_info()override;
 
 	bool is_legal(BasicItems* item)override;
+
+	void pause()override;
+
+	void restart()override;
 public slots:
 
 	void cut(BasicItems *item);

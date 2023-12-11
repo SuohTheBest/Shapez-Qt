@@ -26,7 +26,7 @@ MachineBase *MachineDriller::to_base(QGraphicsScene *scene, QPointF &pos, short 
 void MachineDriller::drill() {
 	if (sender->is_full)return;
 	BasicItems *new_item = new BasicItems(item_id,MachineBase::scene);
-	switch (towards) {//TODO:可以删掉
+	switch (towards) {
 		case 0: {
 			new_item->setPos(pos().x() + 13, pos().y() + 13);
 			break;
@@ -52,4 +52,12 @@ void MachineDriller::drill() {
 
 string MachineDriller::detail_info() {
 	return MachineBase::detail_info() + "\nitem_id:" + to_string(item_id) + "\nis_full:" + to_string(sender->is_full);
+}
+
+void MachineDriller::pause() {
+	timer->stop();
+}
+
+void MachineDriller::restart() {
+	timer->start(DRILLER_TIME);
 }

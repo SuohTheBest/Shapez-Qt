@@ -14,6 +14,9 @@ public:
 
 	string detail_info() override;
 
+	void pause()override;
+
+	void restart()override;
 public slots:
 
 	void drill();

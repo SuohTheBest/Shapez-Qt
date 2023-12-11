@@ -41,6 +41,10 @@ public:
 
 	virtual bool is_legal(BasicItems *item);
 
+	virtual void pause();
+
+	virtual void restart();
+
 	string img_path();
 
 	static string img_path(int item_type);

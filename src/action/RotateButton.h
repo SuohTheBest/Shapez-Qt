@@ -6,6 +6,7 @@
 #include "../machine/MachineConveyor.h"
 
 class RotateButton : public QPushButton {
+	Q_OBJECT
 public:
 	RotateButton(MachineShadow *shadow = nullptr);
 

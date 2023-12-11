@@ -137,3 +137,12 @@ bool MachineConveyor::is_legal(BasicItems *item) {
 	if(items.size()>=MAX_ITEM_HOLD)return false;
 	else return true;
 }
+
+void MachineConveyor::pause() {
+	timer->stop();
+	timer_running=false;
+}
+
+void MachineConveyor::restart() {
+	timer->start(50);
+}

@@ -79,3 +79,11 @@ bool MachineCutter::is_legal(BasicItems *item) {
 	} else
 		return false;
 }
+
+void MachineCutter::pause() {
+	getter->is_full= true;
+}
+
+void MachineCutter::restart() {
+	getter->is_full= false;
+}

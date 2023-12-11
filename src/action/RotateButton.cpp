@@ -3,7 +3,7 @@
 RotateButton::RotateButton(MachineShadow *shadow) :
 		QPushButton(), shadow(shadow) {
 	this->setToolTip("建造");
-	this->setFixedSize(QSize(72, 72));
+	this->setFixedSize(QSize(144, 144));
 	this->setIcon(QIcon("./img/button/rotate.png"));
 	this->setEnabled(false);
 	connect(this, &RotateButton::clicked, this, &RotateButton::on_clicked);

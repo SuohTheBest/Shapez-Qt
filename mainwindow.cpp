@@ -23,6 +23,7 @@ void MainWindow::start_game()
 {
     MapDisplayWidget* widget=new MapDisplayWidget(0,this);
     QRect deskRect = QApplication::desktop()->availableGeometry();
+    widget->thread();
     this->move( deskRect.x(), deskRect.y() );
     this->resize( deskRect.right() - deskRect.x(), deskRect.bottom() - deskRect.y() );
     setCentralWidget(widget);

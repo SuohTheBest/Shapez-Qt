@@ -23,7 +23,8 @@ SOURCES += \
     menuwidget.cpp \
     src/action/ConstructionButton.cpp \
     src/action/RotateButton.cpp \
-    src/action/SaveHelper.cpp \
+    src/action/SaveButton.cpp \
+    src/action/savewidget.cpp \
     src/item/ItemBase.cpp \
     src/item/MachineShadow.cpp \
     src/machine/ItemGetter.cpp \
@@ -44,7 +45,8 @@ HEADERS += \
     src/BaseDefinitions.h \
     src/action/ConstructionButton.h \
     src/action/RotateButton.h \
-    src/action/SaveHelper.h \
+    src/action/SaveButton.h \
+    src/action/savewidget.h \
     src/item/ItemsBase.h \
     src/item/MachineShadow.h \
     src/machine/ItemGetter.h \
@@ -61,7 +63,8 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
-    menuwidget.ui
+    menuwidget.ui \
+    src/action/savewidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

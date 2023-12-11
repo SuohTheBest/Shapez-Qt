@@ -12,12 +12,13 @@ public:
 
 	string detail_info() override;
 
+	int gold;
 public slots:
 
 	void get_items(BasicItems *item);
 
 private:
-	int gold;
+
 	int level;
 	vector<ItemGetter *> getter;
 };

@@ -18,9 +18,14 @@ public:
 
 	bool is_legal(BasicItems *item) override;
 
+	void pause()override;
+
+	void restart()override;
+
 	void rotate();
 
 	QTimer *timer;
+	QQueue<BasicItems *> items;
 public slots:
 
 	void move_item();
@@ -32,7 +37,6 @@ signals:
 	void remove_item(BasicItems *remove_item);
 
 private:
-	QQueue<BasicItems *> items;
 	bool timer_running;
 	short speed;
 	short turns;

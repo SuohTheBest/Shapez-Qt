@@ -20,11 +20,18 @@
 #include "../action/RotateButton.h"
 #include "../item/MachineShadow.h"
 #include "../machine/MachineCenter.h"
+#include "../action/SaveButton.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
 public:
 	MapDisplayWidget(int layer, QWidget *parent);
+
+public slots:
+
+	void pause();
+
+	void restart();
 
 protected:
 	void handleSelectionChange();
@@ -42,6 +49,7 @@ private:
 	QTextEdit *debug_message;
 	ConstructionButton *construction_button;
 	RotateButton *rotate_button;
+	SaveButton *save_button;
 	MachineShadow *shadow;
 	MachineCenter *center;
 };
