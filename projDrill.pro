@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     menuwidget.cpp \
+    src/action/BackToMenu.cpp \
     src/action/ConstructionButton.cpp \
     src/action/PauseButton.cpp \
     src/action/RotateButton.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     mainwindow.h \
     menuwidget.h \
     src/BaseDefinitions.h \
+    src/action/BackToMenu.h \
     src/action/ConstructionButton.h \
     src/action/PauseButton.h \
     src/action/RotateButton.h \

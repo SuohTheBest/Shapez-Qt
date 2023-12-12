@@ -27,6 +27,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
+	back_button=new BackToMenuButton();
 
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 	if (access(map_path(layer).c_str(), F_OK) == -1) {
@@ -71,6 +72,8 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
+	gridlayout->addWidget(back_button,1,2);
+	connect(back_button, SIGNAL(clicked()),this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
@@ -108,6 +111,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
+	back_button=new BackToMenuButton();
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
@@ -145,6 +149,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
+	gridlayout->addWidget(back_button,1,2);
+	connect(back_button, SIGNAL(clicked()),this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
@@ -284,4 +290,8 @@ void MapDisplayWidget::handle_pause_button_clicked() {
 	} else {
 		restart();
 	}
+}
+
+void MapDisplayWidget::handle_back_button_clicked() {
+	emit back_to_menu();
 }

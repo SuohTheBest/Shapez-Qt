@@ -1,14 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "menuwidget.h"
-#include "./src/map/MapDisplayWidget.h"
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MenuWidget* menu=new MenuWidget(this);
+    menu=new MenuWidget(this);
     this->resize(1123,855);
     setCentralWidget(menu);
     connect(menu,SIGNAL(game_start()),this,SLOT(start_game()));
@@ -22,20 +22,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::start_game()
 {
-    MapDisplayWidget* widget=new MapDisplayWidget(0,this);
+	disconnect(menu,SIGNAL(game_start()),this,SLOT(start_game()));
+	disconnect(menu,SIGNAL(game_load(short)),this,SLOT(load_game(short)));
+	menu->deleteLater();
+    widget=new MapDisplayWidget(0,this);
     QRect deskRect = QApplication::desktop()->availableGeometry();
-    widget->thread();
     this->move( deskRect.x(), deskRect.y() );
     this->resize( deskRect.right() - deskRect.x(), deskRect.bottom() - deskRect.y() );
     setCentralWidget(widget);
+	connect(widget, SIGNAL(back_to_menu()), this, SLOT(back_to_menu()));
 }
 
 void MainWindow::load_game(short chosen)
 {
-    MapDisplayWidget* widget=new MapDisplayWidget(chosen);
+	disconnect(menu,SIGNAL(game_start()),this,SLOT(start_game()));
+	disconnect(menu,SIGNAL(game_load(short)),this,SLOT(load_game(short)));
+	menu->deleteLater();
+    widget=new MapDisplayWidget(chosen);
     QRect deskRect = QApplication::desktop()->availableGeometry();
-    widget->thread();
     this->move( deskRect.x(), deskRect.y() );
     this->resize( deskRect.right() - deskRect.x(), deskRect.bottom() - deskRect.y() );
     setCentralWidget(widget);
+	connect(widget, SIGNAL(back_to_menu()), this, SLOT(back_to_menu()));
 }
+
+void MainWindow::back_to_menu() {
+	widget->close();
+	widget->deleteLater();
+	this->resize(1123,855);
+	menu=new MenuWidget(this);
+	connect(menu,SIGNAL(game_start()),this,SLOT(start_game()));
+	connect(menu,SIGNAL(game_load(short)),this,SLOT(load_game(short)));
+	setCentralWidget(menu);
+}
+

@@ -22,11 +22,12 @@
 #include "../machine/MachineCenter.h"
 #include "../action/SaveButton.h"
 #include "../action/PauseButton.h"
+#include "../action/BackToMenu.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
 public:
-	MapDisplayWidget(int layer, QWidget *parent=nullptr);
+	MapDisplayWidget(int layer, QWidget *parent = nullptr);
 
 	MapDisplayWidget(short save_chosen);
 
@@ -34,17 +35,23 @@ public slots:
 
 	void handle_pause_button_clicked();
 
+	void handle_back_button_clicked();
+
 	void pause();
 
 	void restart();
+
+signals:
+
+	void back_to_menu();
 
 protected:
 	void handleSelectionChange();
 
 private:
 	int layer;
-	short map_item_placed[64][64]={};//初始化应为-1
-	short map[64][64]={};
+	short map_item_placed[64][64] = {};//初始化应为-1
+	short map[64][64] = {};
 	QList<MachineBase *> machine_placed;
 	QGraphicsScene *scene;
 	QGraphicsView *view;
@@ -55,7 +62,8 @@ private:
 	ConstructionButton *construction_button;
 	RotateButton *rotate_button;
 	SaveButton *save_button;
-	PauseButton* pause_button;
+	PauseButton *pause_button;
+	BackToMenuButton *back_button;
 	MachineShadow *shadow;
 	MachineCenter *center;
 };

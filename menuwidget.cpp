@@ -17,7 +17,6 @@ MenuWidget::~MenuWidget() {
 
 void MenuWidget::start_game()
 {
-
     emit game_start();
 }
 
