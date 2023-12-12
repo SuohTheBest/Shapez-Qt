@@ -10,6 +10,8 @@ public:
 
 	static MachineBase *to_base(QGraphicsScene *scene, QPointF &pos, short towards);
 
+	void set_multiplier(float* multiply);
+
 	string detail_info()override;
 
 	bool is_legal(BasicItems* item)override;
@@ -17,6 +19,8 @@ public:
 	void pause()override;
 
 	void restart()override;
+
+	float *multiplier;
 public slots:
 
 	void cut(BasicItems *item);
@@ -28,7 +32,6 @@ signals:
 	void finish_cut_2(BasicItems *item2);
 
 private:
-	int speed;
 	ItemGetter *getter;
 	ItemSender *sender[2];
 };

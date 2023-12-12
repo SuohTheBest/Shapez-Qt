@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "./src/map/MapDisplayWidget.h"
 #include "menuwidget.h"
+#include "./src/action/choosetask.h"
+
 namespace Ui {
 	class MainWindow;
 }
@@ -24,10 +26,15 @@ public slots:
 
 	void back_to_menu();
 
+	void choose_task();
+
+	void handle_finished_task(int n);
+
 private:
 	Ui::MainWindow *ui;
 	MapDisplayWidget *widget;
-	MenuWidget* menu;
+	MenuWidget *menu;
+	ChooseTask *task;
 };
 
 #endif // MAINWINDOW_H

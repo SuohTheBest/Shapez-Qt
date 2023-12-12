@@ -26,6 +26,8 @@ SOURCES += \
     src/action/PauseButton.cpp \
     src/action/RotateButton.cpp \
     src/action/SaveButton.cpp \
+    src/action/choosetask.cpp \
+    src/action/levelup.cpp \
     src/action/savewidget.cpp \
     src/item/ItemBase.cpp \
     src/item/MachineShadow.cpp \
@@ -50,6 +52,8 @@ HEADERS += \
     src/action/PauseButton.h \
     src/action/RotateButton.h \
     src/action/SaveButton.h \
+    src/action/choosetask.h \
+    src/action/levelup.h \
     src/action/savewidget.h \
     src/item/ItemsBase.h \
     src/item/MachineShadow.h \
@@ -68,6 +72,8 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     menuwidget.ui \
+    src/action/choosetask.ui \
+    src/action/levelup.ui \
     src/action/savewidget.ui
 
 # Default rules for deployment.

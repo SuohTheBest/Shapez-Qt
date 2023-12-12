@@ -1,55 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SaveWidget</class>
- <widget class="QWidget" name="SaveWidget">
+ <class>ChooseTask</class>
+ <widget class="QWidget" name="ChooseTask">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>520</height>
+    <width>600</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="title">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>210</x>
      <y>10</y>
-     <width>241</width>
-     <height>41</height>
+     <width>171</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Microsoft YaHei</family>
-     <pointsize>18</pointsize>
+     <family>Microsoft YaHei UI</family>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="text">
-    <string>选择存档</string>
+    <string>选择任务</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>59</y>
-     <width>381</width>
-     <height>431</height>
+     <x>29</x>
+     <y>49</y>
+     <width>541</width>
+     <height>331</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>20</number>
-    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QPushButton" name="button_data1">
+     <widget class="QPushButton" name="button_task1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -63,12 +60,13 @@
        </font>
       </property>
       <property name="text">
-       <string>存档1</string>
+       <string>任务1
+(20个石头)</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="button_data2">
+     <widget class="QPushButton" name="button_task2">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -82,12 +80,13 @@
        </font>
       </property>
       <property name="text">
-       <string>存档2</string>
+       <string>任务2
+(10个煤炭)</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="button_data3">
+     <widget class="QPushButton" name="button_task3">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -101,26 +100,8 @@
        </font>
       </property>
       <property name="text">
-       <string>存档3</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="button_data4">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei UI</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>存档4</string>
+       <string>任务3
+(30个碎石块)</string>
       </property>
      </widget>
     </item>

@@ -1,6 +1,5 @@
 #ifndef MACHINEDRILLER_H
 #define MACHINEDRILLER_H
-#define DRILLER_TIME 5000
 
 #include "MachineBase.h"
 #include "../map/MapBlockItem.h"
@@ -12,11 +11,15 @@ public:
 
 	static MachineBase *to_base(QGraphicsScene *scene, QPointF &pos, short towards);
 
+	void set_multiplier(float* multiply);
+
 	string detail_info() override;
 
 	void pause()override;
 
 	void restart()override;
+
+	float* multiplier;
 public slots:
 
 	void drill();

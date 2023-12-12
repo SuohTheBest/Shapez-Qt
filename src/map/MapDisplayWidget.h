@@ -23,6 +23,9 @@
 #include "../action/SaveButton.h"
 #include "../action/PauseButton.h"
 #include "../action/BackToMenu.h"
+#include "../action/levelup.h"
+#include "../machine/MachineCutter.h"
+#include "../machine/MachineDriller.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
@@ -31,11 +34,22 @@ public:
 
 	MapDisplayWidget(short save_chosen);
 
+	float driller_speed_multiplier = 1;
+	float conveyer_speed_multiplier = 1;
+	float cutter_speed_multiplier = 1;
+
+
 public slots:
 
 	void handle_pause_button_clicked();
 
 	void handle_back_button_clicked();
+
+	void handle_task_finished(int n);
+
+	void set_task(int n);
+
+	void level_up(int n);
 
 	void pause();
 
@@ -44,6 +58,10 @@ public slots:
 signals:
 
 	void back_to_menu();
+
+	void choose_task();
+
+	void task_finished(int n);
 
 protected:
 	void handleSelectionChange();

@@ -55,9 +55,9 @@ void MachineConveyor::move_item() {
 			distance_to_mid = position[towards][0] * (mid.x() - item->x() - 9) +
 							  position[towards][1] * (mid.y() - item->y() - 9);
 			if (distance_to_mid <= 0) {
-				item->moveBy(speed * position[sender->towards][0], speed * position[sender->towards][1]);
+				item->moveBy(speed * (*multiplier) * position[sender->towards][0], speed * (*multiplier) * position[sender->towards][1]);
 			} else {
-				item->moveBy(speed * position[towards][0], speed * position[towards][1]);
+				item->moveBy(speed * (*multiplier) * position[towards][0], speed * (*multiplier) * position[towards][1]);
 			}
 		}
 	}
@@ -73,15 +73,15 @@ void MachineConveyor::add_item(BasicItems *new_item) {
 		timer->start(50);
 	}
 	items.append(new_item);
-    new_item->moveBy(speed * position[towards][0], speed * position[towards][1]);
+    new_item->moveBy(speed * (*multiplier) * position[towards][0], speed * (*multiplier) * position[towards][1]);
 	if (items.size() >= MAX_ITEM_HOLD) {
 		getter->is_full = true;
 	}
 }
 
 string MachineConveyor::detail_info() {
-	return MachineBase::detail_info() + "\ntimer_running:" + to_string(timer_running) + "\nspeed:" +
-		   to_string(speed) + "\nitem in queue:" + to_string(items.size()) + "\ntowards:" + to_string(towards) +
+	return MachineBase::detail_info() + "\ntimer_running:" + to_string(timer_running) + "\nspeed * (*multiplier):" +
+		   to_string(speed * (*multiplier)) + "\nitem in queue:" + to_string(items.size()) + "\ntowards:" + to_string(towards) +
 		   "\nsender_towards:" + to_string(sender->towards) + "\nend_pos:" + to_string(end_pos().x()) + " " +
 		   to_string(end_pos().y()) + "\ngetter.is_full:" + to_string(getter->is_full) + "\nsender.is_full:" +
 		   to_string(sender->is_full);
@@ -169,4 +169,8 @@ void MachineConveyor::rotate(int turns) {
 			break;
 	}
 	sender->reconnect();
+}
+
+void MachineConveyor::set_multiplier(float *multiply) {
+	this->multiplier=multiply;
 }

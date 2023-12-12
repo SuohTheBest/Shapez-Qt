@@ -1,7 +1,6 @@
 #ifndef MACHINECONVEYOR_H
 #define MACHINECONVEYOR_H
 #define MAX_ITEM_HOLD 7
-#define CONVEYOR_TIMER_MSEC 80
 
 #include "MachineBase.h"
 #include "QTimer"
@@ -13,6 +12,8 @@ public:
 	MachineConveyor(QGraphicsScene *scene, QPointF &pos, short towards);
 
 	static MachineBase *to_base(QGraphicsScene *scene, QPointF &pos, short towards);
+
+	void set_multiplier(float *multiply);
 
 	string detail_info() override;
 
@@ -29,6 +30,7 @@ public:
 	QTimer *timer;
 	QQueue<BasicItems *> items;
 	short turns;
+	float *multiplier;
 public slots:
 
 	void move_item();

@@ -27,7 +27,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
-	back_button=new BackToMenuButton();
+	back_button = new BackToMenuButton();
 
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 	if (access(map_path(layer).c_str(), F_OK) == -1) {
@@ -72,8 +72,8 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
-	gridlayout->addWidget(back_button,1,2);
-	connect(back_button, SIGNAL(clicked()),this, SLOT(handle_back_button_clicked()));
+	gridlayout->addWidget(back_button, 1, 2);
+	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
@@ -86,6 +86,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	QPointF center_pos(30 * 44, 30 * 44);
 	center = dynamic_cast<MachineCenter *>(MachineBase::to_base[0](scene, center_pos, 0));
 	machine_placed.append(center);
+	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
 }
 
 MapDisplayWidget::MapDisplayWidget(short save_chosen) :
@@ -111,7 +112,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
-	back_button=new BackToMenuButton();
+	back_button = new BackToMenuButton();
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
@@ -149,8 +150,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
-	gridlayout->addWidget(back_button,1,2);
-	connect(back_button, SIGNAL(clicked()),this, SLOT(handle_back_button_clicked()));
+	gridlayout->addWidget(back_button, 1, 2);
+	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
@@ -208,6 +209,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 		}
 		new_machine->pause();
 	}
+	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
 	restart();
 }
 
@@ -248,6 +250,20 @@ void MapDisplayWidget::handleSelectionChange() {
 				rotate_button->set_disable();
 				return;
 			}
+			if(new_machine->machine_id==4)
+			{
+				MachineConveyor* conveyor=dynamic_cast<MachineConveyor*>(new_machine);
+				conveyor->set_multiplier(&conveyer_speed_multiplier);
+			} else if(new_machine->machine_id==1)
+			{
+				MachineCutter* cutter=dynamic_cast<MachineCutter*>(new_machine);
+				cutter->set_multiplier(&cutter_speed_multiplier);
+			}
+			else if(new_machine->machine_id==3)
+			{
+				MachineDriller* driller=dynamic_cast<MachineDriller*>(new_machine);
+				driller->set_multiplier(&driller_speed_multiplier);
+			}
 			machine_placed.append(new_machine);
 			construction_button->add_item_to_map(map_item_placed, new_machine);
 			construction_button->machine_id = -1;
@@ -264,6 +280,10 @@ void MapDisplayWidget::handleSelectionChange() {
 		debug_message->setText(QString::fromStdString(machine->detail_info()));
 		if (machine->machine_id == 4) {
 			rotate_button->set_conveyor(dynamic_cast<MachineConveyor *>(item));
+		} else if (machine->machine_id == 0 && !center->is_task_chosen)//选中了center
+		{
+			rotate_button->set_disable();
+			emit choose_task();
 		} else {
 			rotate_button->set_disable();
 		}
@@ -294,4 +314,40 @@ void MapDisplayWidget::handle_pause_button_clicked() {
 
 void MapDisplayWidget::handle_back_button_clicked() {
 	emit back_to_menu();
+}
+
+void MapDisplayWidget::set_task(int n) {
+	center->set_task(n);
+}
+
+void MapDisplayWidget::handle_task_finished(int n) {
+	LevelUp *levelup = new LevelUp("局部强化", "强化开采器的速率\n(将开采器的速度提升为1.5倍)",
+								   "强化传送带的速率\n(将传送带的速度提升为1.25倍)", "强化切割机的速率\n(将切割机的速度提升为1.5倍)");
+	connect(levelup, SIGNAL(send_levelup(int)),this, SLOT(level_up(int)));
+	levelup->show();
+	emit task_finished(n);
+}
+
+void MapDisplayWidget::level_up(int n) {
+	switch (n) {
+		case 1:
+		{
+			driller_speed_multiplier*=1.5f;
+			break;
+		}
+		case 2:
+		{
+			conveyer_speed_multiplier*=1.25f;
+			break;
+		}
+		case 3:
+		{
+			cutter_speed_multiplier*=1.5f;
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
 }
