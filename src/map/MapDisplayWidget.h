@@ -21,6 +21,7 @@
 #include "../item/MachineShadow.h"
 #include "../machine/MachineCenter.h"
 #include "../action/SaveButton.h"
+#include "../action/PauseButton.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
@@ -30,6 +31,8 @@ public:
 	MapDisplayWidget(short save_chosen);
 
 public slots:
+
+	void handle_pause_button_clicked();
 
 	void pause();
 
@@ -52,6 +55,7 @@ private:
 	ConstructionButton *construction_button;
 	RotateButton *rotate_button;
 	SaveButton *save_button;
+	PauseButton* pause_button;
 	MachineShadow *shadow;
 	MachineCenter *center;
 };

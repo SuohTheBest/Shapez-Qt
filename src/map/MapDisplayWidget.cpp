@@ -8,7 +8,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 		layer(layer) {
 	basic_info = new QLabel("details", this);
 	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	basic_info->setFixedHeight( 75);
+	basic_info->setFixedHeight(75);
 	rotate_button = new RotateButton();
 	save_button = new SaveButton(map, machine_placed);
 	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
@@ -26,6 +26,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	view = new QGraphicsView(scene);
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
+	pause_button = new PauseButton();
 
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 	if (access(map_path(layer).c_str(), F_OK) == -1) {
@@ -69,6 +70,8 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	gridlayout->addWidget(construction_button, 0, 0);
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
+	gridlayout->addWidget(pause_button, 0, 2);
+	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
@@ -86,7 +89,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 		layer(0) {
 	basic_info = new QLabel("details", this);
 	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	basic_info->setFixedHeight( 75);
+	basic_info->setFixedHeight(75);
 	rotate_button = new RotateButton();
 	save_button = new SaveButton(map, machine_placed);
 	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
@@ -104,6 +107,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	view = new QGraphicsView(scene);
 	rotate_button->set_shadow(shadow);
 	scene->setBackgroundBrush(Qt::white);
+	pause_button = new PauseButton();
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
@@ -140,6 +144,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	gridlayout->addWidget(construction_button, 0, 0);
 	gridlayout->addWidget(rotate_button, 0, 1);
 	gridlayout->addWidget(save_button, 1, 1);
+	gridlayout->addWidget(pause_button, 0, 2);
+	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
@@ -180,16 +186,16 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 		if (new_machine->machine_id == 0) {
 			MachineCenter *center = dynamic_cast<MachineCenter *>(new_machine);
 			center->gold = machine_obj.value("gold").toInt();
-			this->center=center;
+			this->center = center;
 		} else if (new_machine->machine_id == 4) {
-			MachineConveyor* conveyor=dynamic_cast<MachineConveyor*>(new_machine);
+			MachineConveyor *conveyor = dynamic_cast<MachineConveyor *>(new_machine);
 			conveyor->rotate(machine_obj.value("turns").toInt());
 			QJsonArray items = machine_obj.value("items").toArray();
 			for (auto item: items) {
 				QJsonObject item_obj = item.toObject();
 				QPointF item_pos = QPointF(item_obj.value("pos").toArray().at(0).toInt(),
 										   item_obj.value("pos").toArray().at(1).toInt());
-				BasicItems* new_item=new BasicItems(item_obj.value("item_id").toInt(),scene);
+				BasicItems *new_item = new BasicItems(item_obj.value("item_id").toInt(), scene);
 				new_item->setPos(item_pos);
 				conveyor->items.append(new_item);
 			}
@@ -262,10 +268,20 @@ void MapDisplayWidget::pause() {
 	for (MachineBase *machine: machine_placed) {
 		machine->pause();
 	}
+	pause_button->switch_state();
 }
 
 void MapDisplayWidget::restart() {
 	for (MachineBase *machine: machine_placed) {
 		machine->restart();
+	}
+	pause_button->switch_state();
+}
+
+void MapDisplayWidget::handle_pause_button_clicked() {
+	if (!pause_button->is_pause) {
+		pause();
+	} else {
+		restart();
 	}
 }
