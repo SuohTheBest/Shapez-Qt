@@ -17,9 +17,11 @@ public:
 
 	void check_selectable();
 
+    static bool get_task(int n);
+
 	~ChooseTask();
 
-	bool is_finished[3];
+	static bool is_finished[3];
 public slots:
     void handle_button_clicked(int n);
 

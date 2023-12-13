@@ -9,7 +9,7 @@ MachineConveyor::MachineConveyor(QGraphicsScene *scene, QPointF &pos, short towa
 	this->setZValue(1);
 	getter = new ItemGetter(this->pos().x() - position[towards][0] * 44,
 							this->pos().y() - position[towards][1] * 44, towards, scene, this);
-	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene, 1000);
+	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene,this, 1000);
 	connect(getter, SIGNAL(item_get(BasicItems * )), this, SLOT(add_item(BasicItems * )));
 	connect(this, SIGNAL(remove_item(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(move_item()));

@@ -3,14 +3,14 @@
 #include "QGraphicsItem"
 #include "QGraphicsScene"
 #include "QGraphicsSceneMouseEvent"
-
-MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
-		layer(layer) {
+#include "../action/choosetask.h"
+MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	basic_info = new QLabel("details", this);
 	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	basic_info->setFixedHeight(75);
 	rotate_button = new RotateButton();
-	save_button = new SaveButton(map, machine_placed);
+	save_button = new SaveButton(map, machine_placed, &driller_speed_multiplier, &conveyer_speed_multiplier,
+								 &cutter_speed_multiplier);
 	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
 	connect(save_button, SIGNAL(restart()), this, SLOT(restart()));
 	QLabel *titleLabel = new QLabel("Debug");
@@ -30,22 +30,7 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	back_button = new BackToMenuButton();
 
 	memset(map_item_placed, -1, sizeof(map_item_placed));
-	if (access(map_path(layer).c_str(), F_OK) == -1) {
-		MapCreator *map = new MapCreator(layer);
-		map->createMap();
-	}
-
-	ifstream map_in(map_path(layer));
-	memset(map, 0, sizeof(map));
-	for (int i = 0; i < 64; i++) {
-		for (int j = 0; j < 64; j++) {
-			int temp;
-			map_in >> temp;
-			map[i][j] = temp;
-		}
-	}
-	map_in.close();
-
+	read_global_levelup();
 	for (int i = 0; i < 64; ++i) {
 		for (int j = 0; j < 64; ++j) {
 			QPixmap block;
@@ -84,18 +69,19 @@ MapDisplayWidget::MapDisplayWidget(int layer, QWidget *parent) :
 	setLayout(layout_main);
 	connect(scene, &QGraphicsScene::selectionChanged, this, &MapDisplayWidget::handleSelectionChange);
 	QPointF center_pos(30 * 44, 30 * 44);
-	center = dynamic_cast<MachineCenter *>(MachineBase::to_base[0](scene, center_pos, 0));
+	center = new MachineCenter(scene, center_pos, 0, gold, center_size, gold_plus);
 	machine_placed.append(center);
+	construction_button->add_item_to_map(map_item_placed, center);
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
 }
 
-MapDisplayWidget::MapDisplayWidget(short save_chosen) :
-		layer(0) {
+MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 	basic_info = new QLabel("details", this);
 	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	basic_info->setFixedHeight(75);
 	rotate_button = new RotateButton();
-	save_button = new SaveButton(map, machine_placed);
+	save_button = new SaveButton(map, machine_placed, &driller_speed_multiplier, &conveyer_speed_multiplier,
+								 &cutter_speed_multiplier);
 	connect(save_button, SIGNAL(pause()), this, SLOT(pause()));
 	connect(save_button, SIGNAL(restart()), this, SLOT(restart()));
 	QLabel *titleLabel = new QLabel("Debug");
@@ -116,15 +102,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
-	ifstream map_in(path + "/map.txt");
-	for (int i = 0; i < 64; i++) {
-		for (int j = 0; j < 64; j++) {
-			int temp;
-			map_in >> temp;
-			map[i][j] = temp;
-		}
-	}
-	map_in.close();
+	read_global_levelup();
 	for (int i = 0; i < 64; ++i) {
 		for (int j = 0; j < 64; ++j) {
 			QPixmap block;
@@ -179,23 +157,45 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 	}
 	QJsonObject root_obj = doc.object();
 	int i = 0;
+	driller_speed_multiplier = root_obj.value("mul_1").toDouble();
+	conveyer_speed_multiplier = root_obj.value("mul_2").toDouble();
+	cutter_speed_multiplier = root_obj.value("mul_3").toDouble();
 	for (;; i++) {
 		QJsonValue machine_val = root_obj.value(QString::fromStdString("machine" + to_string(i)));
 		if (machine_val.isNull() || machine_val.type() != QJsonValue::Object)break;
 		QJsonObject machine_obj = machine_val.toObject();
 		QPointF machine_pos = QPointF(machine_obj.value("pos").toArray().at(0).toInt(),
 									  machine_obj.value("pos").toArray().at(1).toInt());
+		int machine_id = machine_obj.value("machine_id").toInt();
+		if (machine_id == 0) {
+			MachineCenter *_center = new MachineCenter(scene, machine_pos, 0, gold, center_size, gold_plus);
+			this->center = _center;
+			machine_placed.append(center);
+			construction_button->add_item_to_map(map_item_placed, center);
+			center->is_task_chosen = machine_obj.value("is_task_chosen").toBool();
+			QJsonObject taskobj = machine_obj.value("task").toObject();
+			center->task = Task(taskobj.value("task_id").toInt(), taskobj.value("task_item_id").toInt(),
+								taskobj.value("task_item_required").toInt(),
+								taskobj.value("task_item_remaining").toInt());
+			QJsonArray taskarr=machine_obj.value("task_finished").toArray();
+			for (int j = 0; j < 3; ++j) {
+				ChooseTask::is_finished[j]=taskarr[j].toBool();
+			}
+			continue;
+		}
 		MachineBase *new_machine =
-				MachineBase::to_base[machine_obj.value("machine_id").toInt()](scene, machine_pos,
-																			  machine_obj.value("towards").toInt());
+				MachineBase::to_base[machine_id](scene, machine_pos,
+												 machine_obj.value("towards").toInt());
+		if(construction_button->is_overlap(map_item_placed,new_machine))
+		{
+			delete new_machine;
+			continue;
+		}
 		machine_placed.append(new_machine);
 		construction_button->add_item_to_map(map_item_placed, new_machine);
-		if (new_machine->machine_id == 0) {
-			MachineCenter *center = dynamic_cast<MachineCenter *>(new_machine);
-			center->gold = machine_obj.value("gold").toInt();
-			this->center = center;
-		} else if (new_machine->machine_id == 4) {
+		if (new_machine->machine_id == 4) {
 			MachineConveyor *conveyor = dynamic_cast<MachineConveyor *>(new_machine);
+			conveyor->set_multiplier(&conveyer_speed_multiplier);
 			conveyor->rotate(machine_obj.value("turns").toInt());
 			QJsonArray items = machine_obj.value("items").toArray();
 			for (auto item: items) {
@@ -206,6 +206,12 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) :
 				new_item->setPos(item_pos);
 				conveyor->items.append(new_item);
 			}
+		} else if (new_machine->machine_id == 1) {
+			MachineCutter *cutter = dynamic_cast<MachineCutter *>(new_machine);
+			cutter->set_multiplier(&cutter_speed_multiplier);
+		} else if (new_machine->machine_id == 3) {
+			MachineDriller *driller = dynamic_cast<MachineDriller *>(new_machine);
+			driller->set_multiplier(&driller_speed_multiplier);
 		}
 		new_machine->pause();
 	}
@@ -250,18 +256,14 @@ void MapDisplayWidget::handleSelectionChange() {
 				rotate_button->set_disable();
 				return;
 			}
-			if(new_machine->machine_id==4)
-			{
-				MachineConveyor* conveyor=dynamic_cast<MachineConveyor*>(new_machine);
+			if (new_machine->machine_id == 4) {
+				MachineConveyor *conveyor = dynamic_cast<MachineConveyor *>(new_machine);
 				conveyor->set_multiplier(&conveyer_speed_multiplier);
-			} else if(new_machine->machine_id==1)
-			{
-				MachineCutter* cutter=dynamic_cast<MachineCutter*>(new_machine);
+			} else if (new_machine->machine_id == 1) {
+				MachineCutter *cutter = dynamic_cast<MachineCutter *>(new_machine);
 				cutter->set_multiplier(&cutter_speed_multiplier);
-			}
-			else if(new_machine->machine_id==3)
-			{
-				MachineDriller* driller=dynamic_cast<MachineDriller*>(new_machine);
+			} else if (new_machine->machine_id == 3) {
+				MachineDriller *driller = dynamic_cast<MachineDriller *>(new_machine);
 				driller->set_multiplier(&driller_speed_multiplier);
 			}
 			machine_placed.append(new_machine);
@@ -294,14 +296,14 @@ void MapDisplayWidget::pause() {
 	for (MachineBase *machine: machine_placed) {
 		machine->pause();
 	}
-	pause_button->switch_state();
+	if(!pause_button->is_pause)pause_button->switch_state();
 }
 
 void MapDisplayWidget::restart() {
 	for (MachineBase *machine: machine_placed) {
 		machine->restart();
 	}
-	pause_button->switch_state();
+	if(pause_button->is_pause)pause_button->switch_state();
 }
 
 void MapDisplayWidget::handle_pause_button_clicked() {
@@ -313,6 +315,7 @@ void MapDisplayWidget::handle_pause_button_clicked() {
 }
 
 void MapDisplayWidget::handle_back_button_clicked() {
+	pause();
 	emit back_to_menu();
 }
 
@@ -321,33 +324,66 @@ void MapDisplayWidget::set_task(int n) {
 }
 
 void MapDisplayWidget::handle_task_finished(int n) {
-	LevelUp *levelup = new LevelUp("局部强化", "强化开采器的速率\n(将开采器的速度提升为1.5倍)",
-								   "强化传送带的速率\n(将传送带的速度提升为1.25倍)", "强化切割机的速率\n(将切割机的速度提升为1.5倍)");
-	connect(levelup, SIGNAL(send_levelup(int)),this, SLOT(level_up(int)));
+	LevelUp *levelup = new LevelUp("局部强化", "强化开采器的速率\n(将开采器的速度\n提升为1.5倍)",
+								   "强化传送带的速率\n(将传送带的速度\n提升为1.25倍)",
+								   "强化切割机的速率\n(将切割机的速度\n提升为1.5倍)");
+	connect(levelup, SIGNAL(send_levelup(int)), this, SLOT(level_up(int)));
 	levelup->show();
 	emit task_finished(n);
 }
 
 void MapDisplayWidget::level_up(int n) {
 	switch (n) {
-		case 1:
-		{
-			driller_speed_multiplier*=1.5f;
+		case 1: {
+			driller_speed_multiplier *= 1.5f;
 			break;
 		}
-		case 2:
-		{
-			conveyer_speed_multiplier*=1.25f;
+		case 2: {
+			conveyer_speed_multiplier *= 1.25f;
 			break;
 		}
-		case 3:
-		{
-			cutter_speed_multiplier*=1.5f;
+		case 3: {
+			cutter_speed_multiplier *= 1.5f;
 			break;
 		}
-		default:
-		{
+		default: {
 			break;
 		}
 	}
+}
+
+void MapDisplayWidget::read_global_levelup() {
+	QString map_path("./data/savedata/save00/map.txt");
+	QFile map_save(map_path);
+	QString path("./data/savedata/save00/save.json");
+	QFile save(path);
+	if (!save.open(QFile::ReadOnly | QFile::Text) || !map_save.open(QFile::ReadOnly | QFile::Text)) {
+		qDebug() << "Open error";
+		return;
+	}
+	map_save.close();
+	ifstream map_in(map_path.toStdString());
+	memset(map, 0, sizeof(map));
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 64; j++) {
+			int temp;
+			map_in >> temp;
+			map[i][j] = temp;
+		}
+	}
+	map_in.close();
+	QTextStream stream(&save);
+	stream.setCodec("UTF-8");
+	QString str = stream.readAll();
+	save.close();
+	QJsonParseError jsonError;
+	QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
+	if (jsonError.error != QJsonParseError::NoError && !doc.isNull()) {
+		qDebug() << "Json格式错误" << jsonError.error;
+		return;
+	}
+	QJsonObject root_obj = doc.object();
+	center_size = root_obj.value("center_size").toInt();
+	gold_plus = root_obj.value("gold_plus").toInt();
+	gold = root_obj.value("gold").toInt();
 }

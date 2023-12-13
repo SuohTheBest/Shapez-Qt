@@ -16,6 +16,8 @@ Q_OBJECT
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
 
+	void init();
+
 	~MainWindow();
 
 public slots:

@@ -12,7 +12,7 @@ MachineDriller::MachineDriller(QGraphicsScene *scene, QPointF &pos, short toward
 			}
 		}
 	timer = new QTimer(this);
-	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene);
+	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene,this);
 	qDebug() << "sender inited:" << &sender;
 	connect(this, SIGNAL(item_drilled(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(drill()));

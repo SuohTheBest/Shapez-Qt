@@ -13,7 +13,7 @@
 class SaveButton : public QPushButton {
 Q_OBJECT
 public:
-	SaveButton(short (&map)[64][64],QList<MachineBase *> &machine_list);
+	SaveButton(short (&map)[64][64], QList<MachineBase *> &machine_list, float *mul_1, float *mul_2, float *mul_3);
 
 public slots:
 
@@ -31,6 +31,9 @@ private:
 	QList<MachineBase *> &machine_list;
 	SaveWidget *saveWidget;
 	short (&map)[64][64];
+	float *mul_1;
+	float *mul_2;
+	float *mul_3;
 };
 
 #endif //PROJDRILL_SAVEBUTTON_H

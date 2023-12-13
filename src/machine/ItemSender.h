@@ -15,9 +15,9 @@
 class ItemSender : public QObject, public QGraphicsRectItem {
 Q_OBJECT
 public:
-	ItemSender(int posx, int posy, short towards, QGraphicsScene *scene, int msec = 1000);
+	ItemSender(int posx, int posy, short towards, QGraphicsScene *scene,QObject *parent, int msec = 1000);
 
-	ItemSender(QPointF pos, short towards, QGraphicsScene *scene);
+	ItemSender(QPointF pos, short towards, QGraphicsScene *scene,QObject *parent);
 
 	void reconnect();
 

@@ -21,14 +21,19 @@ public slots:
 
 	void start_game();
 
-    void load_game();
+	void load_game();
 
-    void load_game_selected(short selected);
+	void open_shop();
+
+	void load_game_selected(short selected);
+
+	void handle_global_levelup(int n);
 
 signals:
-    void game_start();
 
-    void game_load(short chosen);
+	void game_start();
+
+	void game_load(short chosen);
 
 private:
 	Ui::MenuWidget *ui;

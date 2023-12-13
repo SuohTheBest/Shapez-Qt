@@ -33,9 +33,9 @@ public:
 		scene->addItem(this);
 	};
 
-	int size_x();
+	virtual int size_x();
 
-	int size_y();
+	virtual int size_y();
 
 	virtual string detail_info();
 

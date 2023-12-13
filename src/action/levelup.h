@@ -4,7 +4,10 @@
 #include <QWidget>
 #include "QString"
 #include "QPushButton"
-
+#include "QJsonObject"
+#include "QFile"
+#include "QDebug"
+#include <QJsonDocument>
 namespace Ui {
 	class LevelUp;
 }
@@ -15,12 +18,16 @@ Q_OBJECT
 public:
 	explicit LevelUp(QString title, QString choose1, QString choose2, QString choose3, QWidget *parent = nullptr);
 
+	void check_selectable();
+
 	~LevelUp();
 
 public slots:
 
 	void handle_button_clicked(int n);
+
 signals:
+
 	void send_levelup(int n);
 
 

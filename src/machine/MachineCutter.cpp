@@ -5,30 +5,30 @@ MachineCutter::MachineCutter(QGraphicsScene *scene, QPointF &pos, short towards)
 	switch (towards) {
 		case 0: {
 			getter = new ItemGetter(pos.x(), pos.y() + 44, towards, scene, this);
-			sender[0] = new ItemSender(pos, towards, scene);
+			sender[0] = new ItemSender(pos, towards, scene, this);
 			sender[1] = new ItemSender(pos.x() + 44, pos.y(),
-									   towards, scene);
+									   towards, scene, this);
 			break;
 		}
 		case 1: {
 			getter = new ItemGetter(pos.x(), pos.y(), towards, scene, this);
-			sender[0] = new ItemSender(pos.x() + 44, pos.y(), towards, scene);
+			sender[0] = new ItemSender(pos.x() + 44, pos.y(), towards, scene, this);
 			sender[1] = new ItemSender(pos.x() + 44, pos.y() + 44,
-									   towards, scene);
+									   towards, scene, this);
 			break;
 		}
 		case 2: {
 			getter = new ItemGetter(pos.x() + 44, pos.y(), towards, scene, this);
-			sender[0] = new ItemSender(pos.x() + 44, pos.y() + 44, towards, scene);
+			sender[0] = new ItemSender(pos.x() + 44, pos.y() + 44, towards, scene, this);
 			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
-									   towards, scene);
+									   towards, scene, this);
 			break;
 		}
 		case 3: {
 			getter = new ItemGetter(pos.x() + 44, pos.y() + 44, towards, scene, this);
-			sender[0] = new ItemSender(pos, towards, scene);
+			sender[0] = new ItemSender(pos, towards, scene, this);
 			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
-									   towards, scene);
+									   towards, scene, this);
 			break;
 		}
 		default: {
@@ -53,8 +53,6 @@ void MachineCutter::cut(BasicItems *item) {
 			item2 = new BasicItems(2, scene);
 			item1->setPos(sender[0]->pos().x() + 22, sender[0]->pos().y() + 22);
 			item2->setPos(sender[1]->pos().x() + 22, sender[1]->pos().y() + 22);
-			MachineBase::scene->addItem(item1);
-			MachineBase::scene->addItem(item2);
 			delete item;
 			break;
 		}

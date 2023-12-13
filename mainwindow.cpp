@@ -1,19 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "./src/map/MapCreator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 		QMainWindow(parent), ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 	menu = new MenuWidget(this);
 	this->resize(1123, 855);
-	setCentralWidget(menu);
+    setCentralWidget(menu);
+    init();
 	connect(menu, SIGNAL(game_start()), this, SLOT(start_game()));
 	connect(menu, SIGNAL(game_load(short)), this, SLOT(load_game(short)));
 }
 
 MainWindow::~MainWindow() {
 	delete ui;
+
 }
 
 void MainWindow::start_game() {
@@ -21,7 +23,7 @@ void MainWindow::start_game() {
 	disconnect(menu, SIGNAL(game_load(short)), this, SLOT(load_game(short)));
 	menu->deleteLater();
 	task = new ChooseTask();
-	widget = new MapDisplayWidget(0, this);
+    widget = new MapDisplayWidget(this);
 	QRect deskRect = QApplication::desktop()->availableGeometry();
 	this->move(deskRect.x(), deskRect.y());
 	this->resize(deskRect.right() - deskRect.x(), deskRect.bottom() - deskRect.y());
@@ -65,5 +67,45 @@ void MainWindow::choose_task() {
 
 void MainWindow::handle_finished_task(int n) {
 	task->set_finished(n - 1);
+}
+
+void MainWindow::init() {
+	if(access("./data",F_OK==-1))
+	{
+		mkdir("./data");
+		mkdir("./data/savedata");
+	}
+	if (access("./data/savedata/save00", F_OK == -1)) {
+		mkdir("./data/savedata/save00");
+	}
+	QString map_path("./data/savedata/save00/save.json");
+	QFile map_save(map_path);
+	if(!map_save.exists())
+	{
+		MapCreator* creator=new MapCreator();
+		creator->createMap();
+	}
+	QString path("./data/savedata/save00/save.json");
+	QFile save(path);
+	if(!save.exists())
+	{
+		if (save.open(QIODevice::WriteOnly)) {
+			QJsonObject root_obj;
+			root_obj.insert("center_size",2);
+			root_obj.insert("coal_num",10);
+			root_obj.insert("gold_plus",0);
+			root_obj.insert("gold",0);
+			root_obj.insert("selection1_gold",75);
+			root_obj.insert("selection2_gold",60);
+			root_obj.insert("selection3_gold",50);
+			QTextStream stream(&save);
+			stream.setCodec("UTF-8");
+			QJsonDocument doc;
+			doc.setObject(root_obj);
+			stream<<doc.toJson();
+		} else {
+			qDebug() << "Failed to create file.";
+		}
+	}
 }
 

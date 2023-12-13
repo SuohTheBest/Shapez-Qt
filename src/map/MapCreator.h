@@ -16,12 +16,9 @@ string pic_path(int type);
 
 string map_path(int layer);
 
-string item_data_path(int layer);
-
 class MapCreator {
 private:
 	int map[64][64];
-	int layer;
 
 	void randomPoint(int &x, int &y);
 
@@ -29,11 +26,11 @@ private:
 
 public:
 	// 设置layer层数
-	MapCreator(int layer) :
-			layer(layer) {};
+	MapCreator(int layer = 0) {};
 
-	void createMap();
+	void createMap(int n = 10);
 
+	void level_up(int n);
 };
 
 #endif // MAPCREATOR_H

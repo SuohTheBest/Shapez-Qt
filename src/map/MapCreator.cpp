@@ -7,12 +7,8 @@ string pic_path(int type) {
 	return "./img/" + to_string(type) + ".png";
 }
 
-string map_path(int layer) {
-	return "./data/map/" + to_string(layer) + ".map";
-}
-
-string item_data_path(int layer) {
-	return "./data/playerdata/" + to_string(layer) + ".json";
+string map_path() {
+	return "./data/savedata/save00/map.txt";
 }
 
 void MapCreator::randomPoint(int &x, int &y) {
@@ -37,24 +33,46 @@ void MapCreator::spread(int x, int y, int type, int &max_spread) {
 	}
 }
 
-void MapCreator::createMap() {
-	if (access("./data/map", F_OK) == -1) {
-		mkdir("./data");
-		mkdir("./data/map");
-	}
-	if (access("./data/playerdata", F_OK == -1)) {
-		mkdir("./data/playerdata");
-	}
+void MapCreator::createMap(int n) {
 	memset(map, 0, sizeof(map));
 	for (int j = 1; j < TYPES_OF_BLOCKS; j++) {
-		for (int i = 0; i < 10; i++) {//TODO
-			int x, y, max_spread = 10;
+		for (int i = 0; i < n; i++) {
+			int x, y, max_spread = n;
 			randomPoint(x, y);
 			map[x][y] = j;
 			spread(x, y, j, max_spread);
 		}
 	}
-	ofstream map_out(map_path(layer), ios::out);
+	ofstream map_out(map_path(), ios::out);
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 64; j++) {
+			map_out << map[i][j] << " ";
+		}
+		map_out << endl;
+	}
+	map_out.close();
+}
+
+void MapCreator::level_up(int n) {
+	ifstream map_in(map_path(), ios::in);
+	int num;
+	for (int i = 0; i < 64; ++i) {
+		for (int j = 0; j < 64; ++j) {
+			map_in >> num;
+			map[i][j] = num;
+		}
+	}
+	map_in.close();
+	int max_spread = n;
+	for (int j = 1; j < TYPES_OF_BLOCKS; j++) {
+		for (int i = 0; i < 10; i++) {
+			int x, y;
+			randomPoint(x, y);
+			map[x][y] = j;
+			spread(x, y, j, max_spread);
+		}
+	}
+	ofstream map_out(map_path(), ios::trunc);
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
 			map_out << map[i][j] << " ";

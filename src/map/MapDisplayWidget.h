@@ -30,14 +30,13 @@
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
 public:
-	MapDisplayWidget(int layer, QWidget *parent = nullptr);
+	MapDisplayWidget(QWidget *parent = nullptr);
 
 	MapDisplayWidget(short save_chosen);
 
 	float driller_speed_multiplier = 1;
 	float conveyer_speed_multiplier = 1;
 	float cutter_speed_multiplier = 1;
-
 
 public slots:
 
@@ -67,7 +66,10 @@ protected:
 	void handleSelectionChange();
 
 private:
-	int layer;
+	void read_global_levelup();
+	int center_size;
+	int gold;
+	int gold_plus;
 	short map_item_placed[64][64] = {};//初始化应为-1
 	short map[64][64] = {};
 	QList<MachineBase *> machine_placed;
