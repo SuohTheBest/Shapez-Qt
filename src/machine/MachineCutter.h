@@ -20,6 +20,8 @@ public:
 
 	void restart()override;
 
+	void set_disable()override;
+
 	float *multiplier;
 public slots:
 

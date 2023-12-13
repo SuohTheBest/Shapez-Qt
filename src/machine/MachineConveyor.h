@@ -23,6 +23,8 @@ public:
 
 	void restart() override;
 
+	void set_disable()override;
+
 	void rotate();
 
 	void rotate(int turns);

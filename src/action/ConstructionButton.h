@@ -24,6 +24,8 @@ public:
 
 	void add_item_to_map(short (&map)[64][64], MachineBase *new_item);
 
+	void remove_item_from_map(short (&map)[64][64], MachineBase *item);
+
 public slots:
 
 	void placeItem(const int &n);

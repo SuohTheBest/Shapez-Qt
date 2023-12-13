@@ -88,3 +88,9 @@ void MachineCutter::restart() {
 void MachineCutter::set_multiplier(float *multiply) {
 	this->multiplier = multiply;
 }
+
+void MachineCutter::set_disable() {
+	delete getter;
+	delete sender[0];
+	delete sender[1];
+}

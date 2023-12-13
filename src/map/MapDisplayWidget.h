@@ -26,6 +26,7 @@
 #include "../action/levelup.h"
 #include "../machine/MachineCutter.h"
 #include "../machine/MachineDriller.h"
+#include "../action/DeleteButton.h"
 
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
@@ -84,8 +85,10 @@ private:
 	SaveButton *save_button;
 	PauseButton *pause_button;
 	BackToMenuButton *back_button;
+	DeleteButton *delete_button;
 	MachineShadow *shadow;
 	MachineCenter *center;
+	MachineBase* delete_machine;
 };
 
 #endif // MAPDISPLAYWIDGET_H

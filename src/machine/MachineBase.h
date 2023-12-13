@@ -45,6 +45,8 @@ public:
 
 	virtual void restart();
 
+	virtual void set_disable();
+
 	string img_path();
 
 	static string img_path(int item_type);

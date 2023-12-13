@@ -67,3 +67,7 @@ void MachineDriller::set_multiplier(float *multiply) {
 	this->multiplier = multiply;
 	timer->start(5000.0 / (*multiplier));
 }
+
+void MachineDriller::set_disable() {
+	delete sender;
+}

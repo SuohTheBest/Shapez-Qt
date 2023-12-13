@@ -174,3 +174,8 @@ void MachineConveyor::rotate(int turns) {
 void MachineConveyor::set_multiplier(float *multiply) {
 	this->multiplier=multiply;
 }
+
+void MachineConveyor::set_disable() {
+	delete getter;
+	delete sender;
+}

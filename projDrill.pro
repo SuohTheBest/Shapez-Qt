@@ -23,6 +23,7 @@ SOURCES += \
     menuwidget.cpp \
     src/action/BackToMenu.cpp \
     src/action/ConstructionButton.cpp \
+    src/action/DeleteButton.cpp \
     src/action/PauseButton.cpp \
     src/action/RotateButton.cpp \
     src/action/SaveButton.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     src/BaseDefinitions.h \
     src/action/BackToMenu.h \
     src/action/ConstructionButton.h \
+    src/action/DeleteButton.h \
     src/action/PauseButton.h \
     src/action/RotateButton.h \
     src/action/SaveButton.h \

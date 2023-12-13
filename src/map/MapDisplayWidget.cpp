@@ -4,6 +4,7 @@
 #include "QGraphicsScene"
 #include "QGraphicsSceneMouseEvent"
 #include "../action/choosetask.h"
+
 MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	basic_info = new QLabel("details", this);
 	basic_info->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -28,8 +29,9 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
 	back_button = new BackToMenuButton();
-
+	delete_button = new DeleteButton();
 	memset(map_item_placed, -1, sizeof(map_item_placed));
+    delete_machine=nullptr;
 	read_global_levelup();
 	for (int i = 0; i < 64; ++i) {
 		for (int j = 0; j < 64; ++j) {
@@ -58,6 +60,7 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
 	gridlayout->addWidget(back_button, 1, 2);
+	gridlayout->addWidget(delete_button, 1, 0);
 	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
@@ -99,6 +102,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 	scene->setBackgroundBrush(Qt::white);
 	pause_button = new PauseButton();
 	back_button = new BackToMenuButton();
+	delete_button = new DeleteButton();
+        delete_machine=nullptr;
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
@@ -129,6 +134,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 	gridlayout->addWidget(save_button, 1, 1);
 	gridlayout->addWidget(pause_button, 0, 2);
 	gridlayout->addWidget(back_button, 1, 2);
+	gridlayout->addWidget(delete_button, 1, 0);
 	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
@@ -177,17 +183,16 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 			center->task = Task(taskobj.value("task_id").toInt(), taskobj.value("task_item_id").toInt(),
 								taskobj.value("task_item_required").toInt(),
 								taskobj.value("task_item_remaining").toInt());
-			QJsonArray taskarr=machine_obj.value("task_finished").toArray();
+			QJsonArray taskarr = machine_obj.value("task_finished").toArray();
 			for (int j = 0; j < 3; ++j) {
-				ChooseTask::is_finished[j]=taskarr[j].toBool();
+				ChooseTask::is_finished[j] = taskarr[j].toBool();
 			}
 			continue;
 		}
 		MachineBase *new_machine =
 				MachineBase::to_base[machine_id](scene, machine_pos,
 												 machine_obj.value("towards").toInt());
-		if(construction_button->is_overlap(map_item_placed,new_machine))
-		{
+		if (construction_button->is_overlap(map_item_placed, new_machine)) {
 			delete new_machine;
 			continue;
 		}
@@ -279,6 +284,17 @@ void MapDisplayWidget::handleSelectionChange() {
 		}
 		construction_button->machine_id = -1;
 		MachineBase *machine = dynamic_cast<MachineBase *>(item);
+		if (delete_button->isChecked() && machine->machine_id != 0) {
+			if(delete_machine!= nullptr)delete delete_machine;
+			machine->setSelected(false);
+			scene->removeItem(machine);
+			machine_placed.removeOne(machine);
+			construction_button->remove_item_from_map(map_item_placed, machine);
+			delete_machine = machine;
+            machine->set_disable();
+			delete_button->setChecked(false);
+			return;
+		}
 		debug_message->setText(QString::fromStdString(machine->detail_info()));
 		if (machine->machine_id == 4) {
 			rotate_button->set_conveyor(dynamic_cast<MachineConveyor *>(item));
@@ -296,14 +312,14 @@ void MapDisplayWidget::pause() {
 	for (MachineBase *machine: machine_placed) {
 		machine->pause();
 	}
-	if(!pause_button->is_pause)pause_button->switch_state();
+	if (!pause_button->is_pause)pause_button->switch_state();
 }
 
 void MapDisplayWidget::restart() {
 	for (MachineBase *machine: machine_placed) {
 		machine->restart();
 	}
-	if(pause_button->is_pause)pause_button->switch_state();
+	if (pause_button->is_pause)pause_button->switch_state();
 }
 
 void MapDisplayWidget::handle_pause_button_clicked() {

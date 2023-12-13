@@ -99,3 +99,32 @@ void ConstructionButton::add_item_to_map(short (&map)[64][64], MachineBase *new_
 		}
 	}
 }
+
+void ConstructionButton::remove_item_from_map(short (&map)[64][64], MachineBase *item) {
+	int pos_x = item->x() / 44;
+	int pos_y = item->y() / 44;
+	int size_x = item->size_x();
+	int size_y = item->size_y();
+	if (item->machine_id == 1 && item->towards != 0) {
+		switch (item->towards) {
+			case 1: {
+				pos_x += 1;
+				swap(size_x, size_y);
+				break;
+			}
+			case 2: {
+				pos_y += 1;
+				break;
+			}
+			case 3: {
+				swap(size_x, size_y);
+				break;
+			}
+		}
+	}
+	for (int i = pos_x; i < pos_x + size_x; i++) {
+		for (int j = pos_y; j < pos_y + size_y; j++) {
+			map[i][j] = -1;
+		}
+	}
+}

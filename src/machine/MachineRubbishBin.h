@@ -10,6 +10,7 @@ public:
 
 	static MachineBase *to_base(QGraphicsScene *scene, QPointF &pos, short towards);
 
+	void set_disable()override;
 public slots:
 
 	void destory_item(BasicItems *item);

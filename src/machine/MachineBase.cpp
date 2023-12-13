@@ -52,3 +52,5 @@ bool MachineBase::is_legal(BasicItems *item) {
 void MachineBase::pause() { return; }
 
 void MachineBase::restart() { return; }
+
+void MachineBase::set_disable() { return;}
