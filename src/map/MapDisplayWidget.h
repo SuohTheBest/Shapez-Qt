@@ -1,6 +1,8 @@
 #ifndef MAPDISPLAYWIDGET_H
 #define MAPDISPLAYWIDGET_H
 
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 #include <QWidget>
 #include <QLabel>
 #include <QMouseEvent>
@@ -68,11 +70,15 @@ protected:
 
 private:
 	void read_global_levelup();
+
+	void play_music();
+
 	int center_size;
 	int gold;
 	int gold_plus;
 	short map_item_placed[64][64] = {};//初始化应为-1
 	short map[64][64] = {};
+    QMediaPlayer* player;
 	QList<MachineBase *> machine_placed;
 	QGraphicsScene *scene;
 	QGraphicsView *view;
@@ -88,7 +94,7 @@ private:
 	DeleteButton *delete_button;
 	MachineShadow *shadow;
 	MachineCenter *center;
-	MachineBase* delete_machine;
+	MachineBase *delete_machine;
 };
 
 #endif // MAPDISPLAYWIDGET_H

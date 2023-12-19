@@ -6,29 +6,9 @@ const int machine_size[TYPES_OF_MACHINES][2] = {{2, 2},
 												{2, 1},
 												{1, 1},
 												{1, 1},
-												{1, 1}};
-
-/*MachineShadow::MachineShadow(QPointF pos, int machine_id, QGraphicsScene *scene)
-		:
-		machine_id(machine_id), scene(scene) {
-	int size_x = machine_size[machine_id][0];
-	int size_y = machine_size[machine_id][1];
-	rect = new QGraphicsRectItem(0, 0, 44 * size_x, 44 * size_y, nullptr);
-	this->rotate_count = 0;
-	rect->setTransformOriginPoint(rect->boundingRect().topLeft());
-	rect->setBrush(QColor(255, 165, 0));
-	rect->setOpacity(0.2);
-	rect->setZValue(6);
-	rect->setFlag(QGraphicsItem::ItemIsSelectable, true);
-	QPixmap pixmap("./img/button/towards.png");
-	arrow = new QGraphicsPixmapItem(pixmap);
-	arrow->setTransformOriginPoint(rect->pos());
-	rect->setPos(pos);
-	arrow->setPos(22 * size_x - 22 + pos.x(), 22 * size_y - 22 + pos.y());
-	scene->addItem(rect);
-	scene->addItem(arrow);
-	is_setup = true;
-}*/
+												{1, 1},
+												{4, 1},
+												{3, 1}};
 
 MachineShadow::MachineShadow(QGraphicsScene *scene) :
 		rect(nullptr), arrow(nullptr), group(nullptr), scene(scene) {
@@ -53,7 +33,8 @@ void MachineShadow::setup(QPointF pos, int machine_id) {
 	group->setPos(pos);
 	group->setFlag(QGraphicsItem::ItemIsSelectable);
 	group->setZValue(6);
-	group->setTransformOriginPoint(22 * size_x, 22 * size_x);
+	if (size_x == size_y)group->setTransformOriginPoint(22 * size_x, 22 * size_x);
+	else group->setTransformOriginPoint(22, 22);
 	scene->addItem(group);
 	is_setup = true;
 }

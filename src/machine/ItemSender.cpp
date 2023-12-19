@@ -1,7 +1,7 @@
 #include "ItemSender.h"
 #include "QDebug"
 
-ItemSender::ItemSender(int posx, int posy, short towards, QGraphicsScene *scene,QObject *parent, int msec) :
+ItemSender::ItemSender(int posx, int posy, short towards, QGraphicsScene *scene, QObject *parent, int msec) :
 		QGraphicsRectItem(0, 0, 44, 44), towards(towards), scene(scene), msec(msec) {
 	this->setZValue(2);//getter在sender上方
 	this->setBrush(Qt::red);
@@ -36,7 +36,7 @@ void ItemSender::connect_with_getter() {
 
 void ItemSender::get_item(BasicItems *Item) {
 	emit item_get(Item);
-    if (getter==nullptr||getter->is_full) {
+	if (getter == nullptr || getter->is_full) {
 		is_full = true;
 		wait_timer->start(250);
 	} else {
@@ -54,8 +54,8 @@ void ItemSender::reconnect() {
 	}
 }
 
-ItemSender::ItemSender(QPointF pos, short towards, QGraphicsScene *scene,QObject *parent) :
-		ItemSender(pos.x(), pos.y(), towards, scene,parent) {}
+ItemSender::ItemSender(QPointF pos, short towards, QGraphicsScene *scene, QObject *parent) :
+		ItemSender(pos.x(), pos.y(), towards, scene, parent) {}
 
 void ItemSender::check_is_full() {
 	if (getter == nullptr || getter->is_full)return;

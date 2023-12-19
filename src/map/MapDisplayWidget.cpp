@@ -31,7 +31,7 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	back_button = new BackToMenuButton();
 	delete_button = new DeleteButton();
 	memset(map_item_placed, -1, sizeof(map_item_placed));
-    delete_machine=nullptr;
+	delete_machine = nullptr;
 	read_global_levelup();
 	for (int i = 0; i < 64; ++i) {
 		for (int j = 0; j < 64; ++j) {
@@ -76,6 +76,7 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	machine_placed.append(center);
 	construction_button->add_item_to_map(map_item_placed, center);
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
+    play_music();
 }
 
 MapDisplayWidget::MapDisplayWidget(short save_chosen) {
@@ -103,7 +104,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 	pause_button = new PauseButton();
 	back_button = new BackToMenuButton();
 	delete_button = new DeleteButton();
-        delete_machine=nullptr;
+	delete_machine = nullptr;
 	memset(map_item_placed, -1, sizeof(map_item_placed));
 
 	string path = "./data/savedata/save0" + to_string(save_chosen);
@@ -221,6 +222,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 		new_machine->pause();
 	}
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
+    play_music();
 	restart();
 }
 
@@ -285,13 +287,13 @@ void MapDisplayWidget::handleSelectionChange() {
 		construction_button->machine_id = -1;
 		MachineBase *machine = dynamic_cast<MachineBase *>(item);
 		if (delete_button->isChecked() && machine->machine_id != 0) {
-			if(delete_machine!= nullptr)delete delete_machine;
+			if (delete_machine != nullptr)delete delete_machine;
 			machine->setSelected(false);
 			scene->removeItem(machine);
 			machine_placed.removeOne(machine);
 			construction_button->remove_item_from_map(map_item_placed, machine);
 			delete_machine = machine;
-            machine->set_disable();
+			machine->set_disable();
 			delete_button->setChecked(false);
 			return;
 		}
@@ -332,6 +334,7 @@ void MapDisplayWidget::handle_pause_button_clicked() {
 
 void MapDisplayWidget::handle_back_button_clicked() {
 	pause();
+    player->stop();
 	emit back_to_menu();
 }
 
@@ -402,4 +405,14 @@ void MapDisplayWidget::read_global_levelup() {
 	center_size = root_obj.value("center_size").toInt();
 	gold_plus = root_obj.value("gold_plus").toInt();
 	gold = root_obj.value("gold").toInt();
+}
+
+void MapDisplayWidget::play_music() {
+    player = new QMediaPlayer;
+    QMediaPlaylist *playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl::fromLocalFile("./img/Fading_into_the_Dream_Audio Denoise.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    player->setPlaylist(playlist);
+    player->play();
+
 }

@@ -10,11 +10,13 @@
 class ItemGetter : public QObject, public QGraphicsRectItem {
 Q_OBJECT
 public:
-	ItemGetter(int posx, int posy, short towards, QGraphicsScene *scene,QObject* parent);
+	ItemGetter(int posx, int posy, short towards, QGraphicsScene *scene, QObject *parent, short permit_item_id = -1);
+
+	~ItemGetter();
 
 	void set_full(int msec = 250);
 
-	bool check_is_leagl(BasicItems* item);
+	bool check_is_leagl(BasicItems *item);
 
 	int type() const override {
 		return 23;
@@ -22,6 +24,7 @@ public:
 
 	bool is_full;
 	short towards;
+	short permit_item_id;
 public slots:
 
 	void get_item(BasicItems *Item);

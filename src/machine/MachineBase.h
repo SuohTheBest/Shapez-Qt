@@ -25,7 +25,8 @@ public:
 	MachineBase(int machine_id, const QPixmap &pixmap, QGraphicsScene *scene, QPointF &pos, short towards) :
 			QGraphicsPixmapItem(pixmap, nullptr), machine_id(machine_id), towards(
 			towards), scene(scene) {
-		this->setTransformOriginPoint(22 * machine_size[machine_id][0], 22 * machine_size[machine_id][0]);
+		if(machine_size[machine_id][0]==machine_size[machine_id][1])this->setTransformOriginPoint(22 * machine_size[machine_id][0], 22 * machine_size[machine_id][0]);
+		else this->setTransformOriginPoint(22,22);
 		this->setPos(pos);
 		this->setFlag(this->ItemIsSelectable, true);
 		this->setZValue(3);
@@ -47,8 +48,6 @@ public:
 
 	virtual void set_disable();
 
-	string img_path();
-
 	static string img_path(int item_type);
 
 	int type() const override {
@@ -58,7 +57,6 @@ public:
 	short towards;
 protected:
 	const static int position[4][2];
-
 	QGraphicsScene *scene;
 };
 

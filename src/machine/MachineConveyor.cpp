@@ -176,6 +176,10 @@ void MachineConveyor::set_multiplier(float *multiply) {
 }
 
 void MachineConveyor::set_disable() {
+    timer->stop();
 	delete getter;
 	delete sender;
+	for (int i = 0; i < items.size(); ++i) {
+		delete items[i];
+	}
 }

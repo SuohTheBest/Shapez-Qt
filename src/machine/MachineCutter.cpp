@@ -1,7 +1,7 @@
 #include "MachineCutter.h"
 
 MachineCutter::MachineCutter(QGraphicsScene *scene, QPointF &pos, short towards) :
-		MachineBase(1, QPixmap(QString::fromStdString(img_path(1))), scene, pos, towards) {
+		MachineBase(ID_MACHINE_CUTTER, QPixmap(QString::fromStdString(img_path(ID_MACHINE_CUTTER))), scene, pos, towards) {
 	switch (towards) {
 		case 0: {
 			getter = new ItemGetter(pos.x(), pos.y() + 44, towards, scene, this);
@@ -11,23 +11,23 @@ MachineCutter::MachineCutter(QGraphicsScene *scene, QPointF &pos, short towards)
 			break;
 		}
 		case 1: {
-			getter = new ItemGetter(pos.x(), pos.y(), towards, scene, this);
-			sender[0] = new ItemSender(pos.x() + 44, pos.y(), towards, scene, this);
-			sender[1] = new ItemSender(pos.x() + 44, pos.y() + 44,
+			getter = new ItemGetter(pos.x() - 44, pos.y(), towards, scene, this);
+			sender[0] = new ItemSender(pos.x(), pos.y(), towards, scene, this);
+			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
 									   towards, scene, this);
 			break;
 		}
 		case 2: {
-			getter = new ItemGetter(pos.x() + 44, pos.y(), towards, scene, this);
-			sender[0] = new ItemSender(pos.x() + 44, pos.y() + 44, towards, scene, this);
-			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
+			getter = new ItemGetter(pos.x(), pos.y() - 44, towards, scene, this);
+			sender[0] = new ItemSender(pos.x(), pos.y(), towards, scene, this);
+			sender[1] = new ItemSender(pos.x() - 44, pos.y(),
 									   towards, scene, this);
 			break;
 		}
 		case 3: {
-			getter = new ItemGetter(pos.x() + 44, pos.y() + 44, towards, scene, this);
-			sender[0] = new ItemSender(pos, towards, scene, this);
-			sender[1] = new ItemSender(pos.x(), pos.y() + 44,
+			getter = new ItemGetter(pos.x() + 44, pos.y(), towards, scene, this);
+			sender[0] = new ItemSender(pos.x(), pos.y() - 44, towards, scene, this);
+			sender[1] = new ItemSender(pos.x(), pos.y(),
 									   towards, scene, this);
 			break;
 		}
@@ -71,7 +71,7 @@ string MachineCutter::detail_info() {
 }
 
 bool MachineCutter::is_legal(BasicItems *item) {
-	if (item->could_cut && sender[0]->check_is_legal(item) && sender[1]->check_is_legal(item)) {
+	if (item->item_id == ID_ITEM_STONE && sender[0]->check_is_legal(item) && sender[1]->check_is_legal(item)) {
 		return true;
 	} else
 		return false;

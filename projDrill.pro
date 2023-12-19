@@ -1,6 +1,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += multimedia
 
 CONFIG += c++11
 
@@ -34,11 +35,13 @@ SOURCES += \
     src/item/MachineShadow.cpp \
     src/machine/ItemGetter.cpp \
     src/machine/ItemSender.cpp \
+    src/machine/MachineBallMill.cpp \
     src/machine/MachineBase.cpp \
     src/machine/MachineCenter.cpp \
     src/machine/MachineConveyor.cpp \
     src/machine/MachineCutter.cpp \
     src/machine/MachineDriller.cpp \
+    src/machine/MachineKiln.cpp \
     src/machine/MachineRubbishBin.cpp \
     src/map/MapBlockItem.cpp \
     src/map/MapCreator.cpp \
@@ -61,11 +64,13 @@ HEADERS += \
     src/item/MachineShadow.h \
     src/machine/ItemGetter.h \
     src/machine/ItemSender.h \
+    src/machine/MachineBallMill.h \
     src/machine/MachineBase.h \
     src/machine/MachineCenter.h \
     src/machine/MachineConveyor.h \
     src/machine/MachineCutter.h \
     src/machine/MachineDriller.h \
+    src/machine/MachineKiln.h \
     src/machine/MachineRubbishBin.h \
     src/map/MapBlockItem.h \
     src/map/MapCreator.h \
