@@ -63,7 +63,9 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	gridlayout->addWidget(delete_button, 1, 0);
 	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
+	checkBox = new QCheckBox("开启连续放置模式");
 	layout_tools->addLayout(gridlayout);
+	layout_tools->addWidget(checkBox);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
 	layout_tools->addWidget(debug_message);
@@ -76,7 +78,7 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	machine_placed.append(center);
 	construction_button->add_item_to_map(map_item_placed, center);
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
-    play_music();
+	play_music();
 }
 
 MapDisplayWidget::MapDisplayWidget(short save_chosen) {
@@ -139,6 +141,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 	connect(back_button, SIGNAL(clicked()), this, SLOT(handle_back_button_clicked()));
 	connect(pause_button, SIGNAL(clicked()), this, SLOT(handle_pause_button_clicked()));
 	layout_tools->addLayout(gridlayout);
+	checkBox = new QCheckBox("开启连续放置模式");
+	layout_tools->addWidget(checkBox);
 	layout_tools->addWidget(basic_info);
 	layout_tools->addWidget(titleLabel);
 	layout_tools->addWidget(debug_message);
@@ -222,7 +226,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 		new_machine->pause();
 	}
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
-    play_music();
+	play_music();
 	restart();
 }
 
@@ -275,8 +279,11 @@ void MapDisplayWidget::handleSelectionChange() {
 			}
 			machine_placed.append(new_machine);
 			construction_button->add_item_to_map(map_item_placed, new_machine);
-			construction_button->machine_id = -1;
-			rotate_button->set_disable();
+			if (!checkBox->isChecked()) {//连续放置模式
+				construction_button->machine_id = -1;
+				rotate_button->set_disable();
+				return;
+			}
 		} else { //玩家改变了选择
 			rotate_button->set_disable();
 		}
@@ -334,7 +341,7 @@ void MapDisplayWidget::handle_pause_button_clicked() {
 
 void MapDisplayWidget::handle_back_button_clicked() {
 	pause();
-    player->stop();
+	player->stop();
 	emit back_to_menu();
 }
 
@@ -408,11 +415,11 @@ void MapDisplayWidget::read_global_levelup() {
 }
 
 void MapDisplayWidget::play_music() {
-    player = new QMediaPlayer;
-    QMediaPlaylist *playlist = new QMediaPlaylist();
-    playlist->addMedia(QUrl::fromLocalFile("./img/Fading_into_the_Dream_Audio Denoise.mp3"));
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    player->setPlaylist(playlist);
-    player->play();
+	player = new QMediaPlayer;
+	QMediaPlaylist *playlist = new QMediaPlaylist();
+	playlist->addMedia(QUrl::fromLocalFile("./img/Fading_into_the_Dream_Audio Denoise.mp3"));
+	playlist->setPlaybackMode(QMediaPlaylist::Loop);
+	player->setPlaylist(playlist);
+	player->play();
 
 }

@@ -33,7 +33,7 @@ MachineKiln::MachineKiln(QGraphicsScene *scene, QPointF &pos, short towards) :
 		}
 	}
 	coal = nullptr;
-	sand = nullptr;
+	memset(sand,0, sizeof(BasicItems*)*3);
 	connect(getter[0], SIGNAL(item_get(BasicItems * )), this, SLOT(pre_burn(BasicItems * )));
 	connect(getter[1], SIGNAL(item_get(BasicItems * )), this, SLOT(pre_burn(BasicItems * )));
 	connect(this, SIGNAL(finish_burn(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
@@ -44,12 +44,12 @@ MachineBase *MachineKiln::to_base(QGraphicsScene *scene, QPointF &pos, short tow
 }
 
 string MachineKiln::detail_info() {
-	return MachineBase::detail_info() + +"\n输入煤炭与沙子生成玻璃" + "\nburn_time:10000" + "\ncoal == nullptr:" +
-		   to_string(coal == nullptr) + "\nsand == nullptr:" + to_string(sand == nullptr);
+	return MachineBase::detail_info() + +"\n输入煤炭与沙子生成玻璃" + "\nburn_time:12000" + "\ncoal == nullptr:" +
+		   to_string(coal == nullptr) + "\nsand == nullptr:" + to_string(sand[2] == nullptr);
 }
 
 bool MachineKiln::is_legal(BasicItems *item) {
-	if (((item->item_id == ID_ITEM_SAND && sand == nullptr) || (item->item_id == ID_ITEM_COAL && coal == nullptr)) &&
+	if (((item->item_id == ID_ITEM_SAND && sand[2] == nullptr) || (item->item_id == ID_ITEM_COAL && coal == nullptr)) &&
 		sender->check_is_legal(item)) {
 		return true;
 	} else
@@ -74,8 +74,8 @@ void MachineKiln::set_disable() {
 
 void MachineKiln::pre_burn(BasicItems *item) {
 	if (item->item_id == ID_ITEM_COAL)coal = item;
-	else sand = item;
-	if (coal != nullptr && sand != nullptr)burn();
+	else sand[index++] = item;
+	if (coal != nullptr && sand[2] != nullptr)burn();
 }
 
 void MachineKiln::burn() {
@@ -83,10 +83,13 @@ void MachineKiln::burn() {
 	item = new BasicItems(ID_ITEM_GLASS, scene);
 	item->setPos(sender->pos().x() + 22, sender->pos().y() + 22);
 	delete coal;
-	delete sand;
+	delete sand[0];
+	delete sand[1];
+	delete sand[2];
 	coal = nullptr;
-	sand = nullptr;
+	index=0;
+	memset(sand,0,sizeof(BasicItems*)*3);
 	emit finish_burn(item);
-	getter[0]->set_full(10000);
-	getter[1]->set_full(10000);
+	getter[0]->set_full(12000);
+	getter[1]->set_full(12000);
 }

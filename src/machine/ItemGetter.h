@@ -6,7 +6,9 @@
 #include <QGraphicsScene>
 #include "QDebug"
 #include "QTimer"
-
+/**
+ * @brief 用于机器接收物品，发出信号item_get
+ */
 class ItemGetter : public QObject, public QGraphicsRectItem {
 Q_OBJECT
 public:

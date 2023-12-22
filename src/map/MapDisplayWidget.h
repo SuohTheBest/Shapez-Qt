@@ -18,6 +18,7 @@
 #include "QGroupBox"
 #include "QTextEdit"
 #include "MapBlockItem.h"
+#include "QCheckBox"
 #include "../action/ConstructionButton.h"
 #include "../action/RotateButton.h"
 #include "../item/MachineShadow.h"
@@ -92,6 +93,7 @@ private:
 	PauseButton *pause_button;
 	BackToMenuButton *back_button;
 	DeleteButton *delete_button;
+	QCheckBox *checkBox;
 	MachineShadow *shadow;
 	MachineCenter *center;
 	MachineBase *delete_machine;

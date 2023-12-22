@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/banner">
         <file>img/MyShapez_ba-style@nulla.top.png</file>
+        <file>img/icon.ico</file>
     </qresource>
 </RCC>

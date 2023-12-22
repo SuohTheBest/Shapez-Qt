@@ -34,7 +34,8 @@ private:
 	ItemGetter *getter[2];
 	ItemSender *sender;
 	BasicItems* coal;
-	BasicItems* sand;
+	BasicItems* sand[3];
+	short index=0;
 };
 
 #endif //PROJDRILL_MACHINEKILN_H

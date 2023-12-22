@@ -3,11 +3,12 @@
 #include "./src/map/MapCreator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-		QMainWindow(parent), ui(new Ui::MainWindow) {
+        QMainWindow(parent), ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 	menu = new MenuWidget(this);
 	this->resize(1123, 855);
     setCentralWidget(menu);
+    this->setWindowTitle("MyShapez");
     init();
 	connect(menu, SIGNAL(game_start()), this, SLOT(start_game()));
 	connect(menu, SIGNAL(game_load(short)), this, SLOT(load_game(short)));

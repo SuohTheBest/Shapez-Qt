@@ -2,7 +2,6 @@
 #define PROJDRILL_MACHINECENTER_H
 
 #include "MachineBase.h"
-
 struct Task {
 	short task_id;
 	short task_item_id;
@@ -50,8 +49,9 @@ signals:
 	void task_finished(int id);
 
 private:
-
+	QGraphicsTextItem *label;
 	vector<ItemGetter *> getter;
+	void set_text();
 };
 
 #endif//PROJDRILL_MACHINECENTER_H

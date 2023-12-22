@@ -1,18 +1,19 @@
 #include "MachineCenter.h"
 
 MachineCenter::MachineCenter(QGraphicsScene *scene, QPointF &pos, short towards, int gold, int level, int gold_plus) :
-		MachineBase(0, QPixmap(QString::fromStdString(img_path(0))).scaled(44*level,44*level), scene, pos, towards), gold(
+		MachineBase(0, QPixmap(QString::fromStdString(img_path(0))).scaled(44 * level, 44 * level), scene, pos, towards)
+		, gold(
 		gold), level(level), gold_plus(gold_plus) {
-	for (int i = 0; i < level ; ++i) {
+	for (int i = 0; i < level; ++i) {
 		getter.push_back(new ItemGetter(pos.x() + 44 * i, pos.y() - 44, 2, scene, this));
 	}
-	for (int i = 0; i < level ; ++i) {
+	for (int i = 0; i < level; ++i) {
 		getter.push_back(new ItemGetter(pos.x() + 44 * level, pos.y() + 44 * i, 3, scene, this));
 	}
-	for (int i = 0; i < level ; ++i) {
+	for (int i = 0; i < level; ++i) {
 		getter.push_back(new ItemGetter(pos.x() + 44 * level - 44 * i - 44, pos.y() + 44 * level, 0, scene, this));
 	}
-	for (int i = 0; i < level ; ++i) {
+	for (int i = 0; i < level; ++i) {
 		getter.push_back(new ItemGetter(pos.x() - 44, pos.y() + 44 * i, 1, scene, this));
 	}
 	for (int i = 0; i < getter.size(); ++i) {
@@ -25,12 +26,20 @@ MachineCenter::MachineCenter(QGraphicsScene *scene, QPointF &pos, short towards,
 	this->setRotation(90 * towards);
 	scene->addItem(this);
 	this->setPos(pos);
+	label = new QGraphicsTextItem("");
+	label->setZValue(10);
+    QFont font("Arial", 2 + 3*level);
+	label->setFont(font);
+	QPointF center = this->boundingRect().center();
+    label->setPos(pos.x(), pos.y() + center.y()-15);
+	scene->addItem(label);
 }
 
 void MachineCenter::get_items(BasicItems *item) {
 	gold += item->value + gold_plus;
 	if (is_task_chosen && item->item_id == task.task_item_id) {
 		task.task_item_remaining--;
+		set_text();
 		if (task.task_item_remaining == 0) {
 			emit task_finished(task.task_id);
 			is_task_chosen = false;
@@ -44,8 +53,9 @@ MachineBase *MachineCenter::to_base(QGraphicsScene *scene, QPointF &pos, short t
 }
 
 string MachineCenter::detail_info() {
-	return MachineBase::detail_info() +"\nlevel:"+ to_string(level)+ "\ngold:" + to_string(gold) + "\ntask_index:" + to_string(task.task_id) +
-		   "\nremaining:" +to_string(task.task_item_remaining)+"\ngold_plus:"+ to_string(gold_plus);
+	return MachineBase::detail_info() + "\nlevel:" + to_string(level) + "\ngold:" + to_string(gold) + "\ntask_index:" +
+		   to_string(task.task_id) +
+		   "\nremaining:" + to_string(task.task_item_remaining) + "\ngold_plus:" + to_string(gold_plus);
 }
 
 void MachineCenter::set_task(int task_index) {
@@ -66,6 +76,7 @@ void MachineCenter::set_task(int task_index) {
 			break;
 		}
 	}
+	set_text();
 	is_task_chosen = true;
 }
 
@@ -80,5 +91,19 @@ int MachineCenter::size_x() {
 
 int MachineCenter::size_y() {
 	return level;
+}
+
+void MachineCenter::set_text() {
+	int n = task.task_item_required - task.task_item_remaining;
+	if (n != task.task_item_required)
+		label->setHtml(
+				"<font color='red'>" + QString::number(n) + "</font>" + "/" + QString::number(task.task_item_required) +
+				"已交付");
+	else {
+        label->setHtml(
+				"<font color='green'>" + QString::number(n) + "</font>" + "/" +
+				QString::number(task.task_item_required) +
+				"已交付");
+	}
 }
 
