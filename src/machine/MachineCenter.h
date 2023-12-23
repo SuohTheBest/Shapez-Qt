@@ -16,7 +16,7 @@ struct Task {
 			task_id(0), task_item_id(0), task_item_remaining(0), task_item_required(0) {};
 };
 /**
- * @brief 交付中心，必须直接调用构造函数，to_base产生的不会包括升级
+ * @brief 交付中心，必须直接调用构造函数，to_base产生的不会包括全局强化
  */
 class MachineCenter : public QObject, public MachineBase {
 Q_OBJECT
@@ -39,7 +39,7 @@ public:
 	int level;
 	Task task;
 	int gold_plus;
-	bool is_task_chosen;//TODO:data array
+	bool is_task_chosen;
 public slots:
 
 	void get_items(BasicItems *item);

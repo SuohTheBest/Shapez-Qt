@@ -9,7 +9,7 @@ MachineConveyor::MachineConveyor(QGraphicsScene *scene, QPointF &pos, short towa
 	this->setZValue(1);
 	getter = new ItemGetter(this->pos().x() - position[towards][0] * 44,
 							this->pos().y() - position[towards][1] * 44, towards, scene, this);
-	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene,this, 1000);
+	sender = new ItemSender(this->pos().x(), this->pos().y(), towards, scene, this, 1000);
 	connect(getter, SIGNAL(item_get(BasicItems * )), this, SLOT(add_item(BasicItems * )));
 	connect(this, SIGNAL(remove_item(BasicItems * )), sender, SLOT(get_item(BasicItems * )));
 	connect(timer, SIGNAL(timeout()), this, SLOT(move_item()));
@@ -55,9 +55,11 @@ void MachineConveyor::move_item() {
 			distance_to_mid = position[towards][0] * (mid.x() - item->x() - 9) +
 							  position[towards][1] * (mid.y() - item->y() - 9);
 			if (distance_to_mid <= 0) {
-				item->moveBy(speed * (*multiplier) * position[sender->towards][0], speed * (*multiplier) * position[sender->towards][1]);
+				item->moveBy(speed * (*multiplier) * position[sender->towards][0],
+							 speed * (*multiplier) * position[sender->towards][1]);
 			} else {
-				item->moveBy(speed * (*multiplier) * position[towards][0], speed * (*multiplier) * position[towards][1]);
+				item->moveBy(speed * (*multiplier) * position[towards][0],
+							 speed * (*multiplier) * position[towards][1]);
 			}
 		}
 	}
@@ -73,18 +75,23 @@ void MachineConveyor::add_item(BasicItems *new_item) {
 		timer->start(50);
 	}
 	items.append(new_item);
-    new_item->moveBy(speed * (*multiplier) * position[towards][0], speed * (*multiplier) * position[towards][1]);
+	new_item->moveBy(speed * (*multiplier) * position[towards][0], speed * (*multiplier) * position[towards][1]);
 	if (items.size() >= MAX_ITEM_HOLD) {
 		getter->is_full = true;
 	}
 }
 
 string MachineConveyor::detail_info() {
-	return MachineBase::detail_info() + "\ntimer_running:" + to_string(timer_running) + "\nspeed * (*multiplier):" +
-		   to_string(speed * (*multiplier)) + "\nitem in queue:" + to_string(items.size()) + "\ntowards:" + to_string(towards) +
-		   "\nsender_towards:" + to_string(sender->towards) + "\nend_pos:" + to_string(end_pos().x()) + " " +
-		   to_string(end_pos().y()) + "\ngetter.is_full:" + to_string(getter->is_full) + "\nsender.is_full:" +
-		   to_string(sender->is_full);
+	string s = MachineBase::detail_info() + "\ntimer_running:" + to_string(timer_running) + "\nspeed * (*multiplier):" +
+			   to_string(speed * (*multiplier)) + "\nitem in queue:" + to_string(items.size()) + "\ntowards:" +
+			   to_string(towards) +
+			   "\nsender_towards:" + to_string(sender->towards) + "\nend_pos:" + to_string(end_pos().x()) + " " +
+			   to_string(end_pos().y()) + "\ngetter.is_full:" + to_string(getter->is_full) + "\nsender.is_full:" +
+			   to_string(sender->is_full);
+	for (int i = 0; i < items.size(); ++i) {
+		s += "\nitem" + to_string(i) + ": " + to_string(items[i]->pos().x()) + " " + to_string(items[i]->pos().y());
+	}
+	return s;
 }
 
 void MachineConveyor::rotate() {
@@ -134,13 +141,13 @@ QPointF MachineConveyor::mid_pos(BasicItems *item) {
 }
 
 bool MachineConveyor::is_legal(BasicItems *item) {
-	if(items.size()>=MAX_ITEM_HOLD)return false;
+	if (items.size() >= MAX_ITEM_HOLD)return false;
 	else return true;
 }
 
 void MachineConveyor::pause() {
 	timer->stop();
-	timer_running=false;
+	timer_running = false;
 }
 
 void MachineConveyor::restart() {
@@ -148,21 +155,21 @@ void MachineConveyor::restart() {
 }
 
 void MachineConveyor::rotate(int turns) {
-	this->turns=turns%3;
+	this->turns = turns % 3;
 	switch (turns) {
 		case 0: {
 			MachineBase::setPixmap(QPixmap("./img/machine/4.png"));
-			sender->towards=getter->towards;
+			sender->towards = getter->towards;
 			break;
 		}
 		case 1: {
 			MachineBase::setPixmap(QPixmap("./img/machine/4-right.png"));
-			sender->towards=(getter->towards+1)%4;
+			sender->towards = (getter->towards + 1) % 4;
 			break;
 		}
 		case 2: {
 			MachineBase::setPixmap(QPixmap("./img/machine/4-left.png"));
-			sender->towards=(getter->towards+3)%4;
+			sender->towards = (getter->towards + 3) % 4;
 			break;
 		}
 		default:
@@ -172,11 +179,11 @@ void MachineConveyor::rotate(int turns) {
 }
 
 void MachineConveyor::set_multiplier(float *multiply) {
-	this->multiplier=multiply;
+	this->multiplier = multiply;
 }
 
 void MachineConveyor::set_disable() {
-    timer->stop();
+	timer->stop();
 	delete getter;
 	delete sender;
 	for (int i = 0; i < items.size(); ++i) {

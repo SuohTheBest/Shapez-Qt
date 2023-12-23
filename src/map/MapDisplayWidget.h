@@ -30,7 +30,9 @@
 #include "../machine/MachineCutter.h"
 #include "../machine/MachineDriller.h"
 #include "../action/DeleteButton.h"
-
+/**
+ * @brief 游戏界面
+ */
 class MapDisplayWidget : public QWidget {
 Q_OBJECT
 public:

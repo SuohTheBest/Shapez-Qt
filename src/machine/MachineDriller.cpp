@@ -69,5 +69,6 @@ void MachineDriller::set_multiplier(float *multiply) {
 }
 
 void MachineDriller::set_disable() {
+	timer->stop();
 	delete sender;
 }

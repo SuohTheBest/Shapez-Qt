@@ -2,7 +2,9 @@
 #define PROJDRILL_MACHINECUTTER_H
 
 #include "MachineBase.h"
-
+/**
+ * @brief 切割机
+ */
 class MachineCutter : public QObject, public MachineBase {
 Q_OBJECT
 public:

@@ -5,6 +5,5 @@ DeleteButton::DeleteButton(QWidget *parent) : QPushButton(parent) {
 	this->setFixedSize(QSize(144, 144));
 	this->setIcon(QIcon("./img/button/bomb.png"));
 	this->setCheckable(true);
-
 }
 

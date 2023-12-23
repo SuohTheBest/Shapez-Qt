@@ -46,3 +46,8 @@ void ChooseTask::handle_button_clicked(int n)
     emit send_task(n);
 	close();
 }
+
+bool ChooseTask::has_new_task() {
+	if(is_finished[0]&&is_finished[1]&&is_finished[2])return false;
+	else return true;
+}

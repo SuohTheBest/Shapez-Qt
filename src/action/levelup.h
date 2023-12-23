@@ -11,7 +11,9 @@
 namespace Ui {
 	class LevelUp;
 }
-
+/**
+ * @brief 触发升级的弹出窗口
+ */
 class LevelUp : public QWidget {
 Q_OBJECT
 

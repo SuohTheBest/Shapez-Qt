@@ -60,6 +60,7 @@ void MainWindow::back_to_menu() {
 }
 
 void MainWindow::choose_task() {
+	if(!task->has_new_task())return;
 	disconnect(task, SIGNAL(send_task(int)), widget, SLOT(set_task(int)));
 	task->check_selectable();
 	task->show();

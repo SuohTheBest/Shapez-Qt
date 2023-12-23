@@ -5,9 +5,8 @@ ItemGetter::ItemGetter(int posx, int posy, short towards, QGraphicsScene *scene,
 		:
 		QGraphicsRectItem(0, 0, 44, 44), towards(towards), scene(scene), permit_item_id(permit_item_id) {
 	this->setZValue(3);//getter在sender上方
-	this->setBrush(Qt::blue);
 	this->setParent(parent);
-	this->setOpacity(0.3);
+    this->setOpacity(0.01);
 	this->setPos(posx, posy);
 	qDebug() << "Getter_pos:" << this->pos() << "towards:" << this->towards;
 	scene->addItem(this);

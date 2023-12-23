@@ -3,7 +3,9 @@
 
 #include "MachineBase.h"
 #include "../map/MapBlockItem.h"
-
+/**
+ * @brief 矿井挖掘
+ */
 class MachineDriller : public QObject, public MachineBase {
 Q_OBJECT
 public:

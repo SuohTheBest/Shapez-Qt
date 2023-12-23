@@ -1,7 +1,9 @@
 #ifndef PROJDRILL_MACHINEBALLMILL_H
 #define PROJDRILL_MACHINEBALLMILL_H
 #include "MachineBase.h"
-
+/**
+ * @brief 机器球磨
+ */
 class MachineBallMill : public QObject, public MachineBase {
 Q_OBJECT
 public:

@@ -13,7 +13,11 @@
 
 using namespace std;
 
-
+/**
+ * @brief 机器基类
+ * @author SuohTheBest
+ * @attention 添加新的机器时需要实现to_base函数，并添加到to_base数组中
+ */
 class MachineBase : public QGraphicsPixmapItem {
 public:
 	int machine_id;
@@ -25,8 +29,9 @@ public:
 	MachineBase(int machine_id, const QPixmap &pixmap, QGraphicsScene *scene, QPointF &pos, short towards) :
 			QGraphicsPixmapItem(pixmap, nullptr), machine_id(machine_id), towards(
 			towards), scene(scene) {
-		if(machine_size[machine_id][0]==machine_size[machine_id][1])this->setTransformOriginPoint(22 * machine_size[machine_id][0], 22 * machine_size[machine_id][0]);
-		else this->setTransformOriginPoint(22,22);
+		if (machine_size[machine_id][0] == machine_size[machine_id][1])
+			this->setTransformOriginPoint(22 * machine_size[machine_id][0], 22 * machine_size[machine_id][0]);
+		else this->setTransformOriginPoint(22, 22);
 		this->setPos(pos);
 		this->setFlag(this->ItemIsSelectable, true);
 		this->setZValue(3);

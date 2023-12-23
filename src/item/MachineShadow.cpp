@@ -22,7 +22,6 @@ void MachineShadow::setup(QPointF pos, int machine_id) {
 	int size_y = machine_size[machine_id][1];
 	rect = new QGraphicsRectItem(0, 0, 44 * size_x, 44 * size_y, nullptr);
 	this->rotate_count = 0;
-	rect->setBrush(QColor(255, 165, 0));
 	rect->setOpacity(0.2);
 	QPixmap pixmap("./img/button/towards.png");
 	arrow = new QGraphicsPixmapItem(pixmap);
@@ -58,4 +57,9 @@ void MachineShadow::_destory_real() {
 
 void MachineShadow::setPos(QPointF pos) {
 	group->setPos(pos);
+}
+
+void MachineShadow::set_color(bool overlap) {
+	if(overlap)rect->setBrush(QColor(255, 0, 0));
+	else rect->setBrush(QColor(0,255,0));
 }

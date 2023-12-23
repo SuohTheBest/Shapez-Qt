@@ -10,7 +10,9 @@
 #include"QGraphicsScene"
 
 using namespace std;
-
+/**
+ * @brief 负责建造的按钮，也负责检测是否重叠，重叠时将无法放置物体
+ */
 class ConstructionButton : public QToolButton {
 Q_OBJECT
 public:

@@ -11,7 +11,7 @@
 using namespace std;
 
 /**
- * @brief 在传送带上移动的物品
+ * @brief 可以在传送带上移动的物品
  */
 class BasicItems : public QGraphicsPixmapItem {
 	const static short item_value[TYPES_OF_ITEMS];

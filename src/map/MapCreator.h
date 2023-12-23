@@ -15,7 +15,9 @@ using namespace std;
 string pic_path(int type);
 
 string map_path(int layer);
-
+/**
+ * 用于生成地图及添加资源
+ */
 class MapCreator {
 private:
 	int map[64][64];

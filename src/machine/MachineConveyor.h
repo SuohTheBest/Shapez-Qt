@@ -5,7 +5,9 @@
 #include "MachineBase.h"
 #include "QTimer"
 #include "QQueue"
-
+/**
+ * @brief 传送带
+ */
 class MachineConveyor : public QObject, public MachineBase {
 Q_OBJECT
 public:

@@ -7,7 +7,9 @@
 namespace Ui {
 	class SaveWidget;
 }
-
+/**
+ * @brief 触发保存事件时弹出的窗口
+ */
 class SaveWidget : public QWidget {
 Q_OBJECT
 

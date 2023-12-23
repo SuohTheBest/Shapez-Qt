@@ -2,7 +2,9 @@
 #define PROJDRILL_MACHINERUBBISHBIN_H
 
 #include "MachineBase.h"
-
+/**
+ * @brief 垃圾桶
+ */
 class MachineRubbishBin : public QObject, public MachineBase {
 Q_OBJECT
 public:

@@ -79,6 +79,7 @@ MapDisplayWidget::MapDisplayWidget(QWidget *parent) {
 	construction_button->add_item_to_map(map_item_placed, center);
 	connect(center, SIGNAL(task_finished(int)), this, SLOT(handle_task_finished(int)));
 	play_music();
+    restart();
 }
 
 MapDisplayWidget::MapDisplayWidget(short save_chosen) {
@@ -198,6 +199,7 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 				MachineBase::to_base[machine_id](scene, machine_pos,
 												 machine_obj.value("towards").toInt());
 		if (construction_button->is_overlap(map_item_placed, new_machine)) {
+			new_machine->set_disable();
 			delete new_machine;
 			continue;
 		}
@@ -210,8 +212,8 @@ MapDisplayWidget::MapDisplayWidget(short save_chosen) {
 			QJsonArray items = machine_obj.value("items").toArray();
 			for (auto item: items) {
 				QJsonObject item_obj = item.toObject();
-				QPointF item_pos = QPointF(item_obj.value("pos").toArray().at(0).toInt(),
-										   item_obj.value("pos").toArray().at(1).toInt());
+				QPointF item_pos = QPointF(item_obj.value("pos").toArray().at(0).toDouble(),
+										   item_obj.value("pos").toArray().at(1).toDouble());
 				BasicItems *new_item = new BasicItems(item_obj.value("item_id").toInt(), scene);
 				new_item->setPos(item_pos);
 				conveyor->items.append(new_item);

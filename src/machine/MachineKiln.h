@@ -2,7 +2,9 @@
 #define PROJDRILL_MACHINEKILN_H
 
 #include "MachineBase.h"
-
+/**
+ * @brief 烧窑
+ */
 class MachineKiln : public QObject, public MachineBase {
 Q_OBJECT
 public:

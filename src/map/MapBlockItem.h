@@ -6,7 +6,9 @@
 #include "string"
 
 using namespace std;
-
+/**
+ * 组成地图的方块
+ */
 class MapBlockItem : public QGraphicsPixmapItem {
 public:
 	using QGraphicsPixmapItem::QGraphicsPixmapItem;

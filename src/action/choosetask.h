@@ -6,7 +6,9 @@
 namespace Ui {
 	class ChooseTask;
 }
-
+/**
+ * @brief 选择任务的弹出窗口
+ */
 class ChooseTask : public QWidget {
 Q_OBJECT
 
@@ -16,6 +18,8 @@ public:
 	void set_finished(int n);
 
 	void check_selectable();
+
+	bool has_new_task();
 
     static bool get_task(int n);
 

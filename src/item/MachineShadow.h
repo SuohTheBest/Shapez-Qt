@@ -5,6 +5,9 @@
 #include "QColor"
 #include"QGraphicsScene"
 
+/**
+ * @brief 放置物品时生成阴影
+ */
 class MachineShadow {
 public:
 	//MachineShadow(QPointF pos, int machine_id, QGraphicsScene *scene);
@@ -18,6 +21,8 @@ public:
 	void setup(QPointF pos, int machine_id);
 
 	void destory();
+
+	void set_color(bool overlap);
 
 	int machine_id;
 	int rotate_count;

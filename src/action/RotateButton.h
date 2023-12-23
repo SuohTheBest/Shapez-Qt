@@ -4,7 +4,9 @@
 #include "QPushButton"
 #include "../item/MachineShadow.h"
 #include "../machine/MachineConveyor.h"
-
+/**
+ * @brief 处理物体旋转的按钮
+ */
 class RotateButton : public QPushButton {
 	Q_OBJECT
 public:

@@ -2,7 +2,9 @@
 #define PROJDRILL_PAUSEBUTTON_H
 
 #include "QPushButton"
-
+/**
+ * 处理暂停的按钮
+ */
 class PauseButton : public QPushButton {
 public:
 	PauseButton();
