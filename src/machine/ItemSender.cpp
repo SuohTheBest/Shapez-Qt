@@ -4,7 +4,8 @@
 ItemSender::ItemSender(int posx, int posy, short towards, QGraphicsScene *scene, QObject *parent, int msec) :
 		QGraphicsRectItem(0, 0, 44, 44), towards(towards), scene(scene), msec(msec) {
 	this->setZValue(2);//getter在sender上方
-    this->setOpacity(0.01);
+    this->setBrush(QColor(255,0,0));
+    this->setOpacity(0.3);
 	this->setPos(posx, posy);
 	qDebug() << "Sender_pos:" << this->pos() << "towards:" << towards;
 	timer = new QTimer(this);
